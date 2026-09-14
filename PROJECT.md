@@ -369,6 +369,10 @@ Link row (detailed and compact variants — detailed is the default everywhere, 
 - **Collections already have a screen and a Browse tab slot**, even though Collections are V2 (§8, §11) — the v1 nav shell should reserve/hide that slot rather than needing restructuring later, but the Collections *feature* (schema, saved-filter execution) stays gated to Phase 2 per PLAN.md.
 - **Settings surfaces some V2/unscoped items** as design placeholders (import/export, backup & sync, a security/biometric lock) — these are shown for completeness of the shell, not a scope change; keep them non-functional or hidden until their owning phase.
 
+### 14.9a Deviation from the design — tab bar icons
+
+The design's tab bar (§14.4) is deliberately icon-free — the original markup used a small underline mark instead. At the user's explicit request (it read as visually sparse in the running app), the built `TabBar` component adds a small icon above each label ([Feather](https://feathericons.com/) — thin stroke, no fill, closest available match to the flat/geometric Modernist look). This is scoped to the tab bar only: every other icon-free rule in §14.1 (categories, link rows, status badges, letter-marks in place of favicons, etc.) is unchanged. See the "DEVIATION" comment in `src/components/TabBar.tsx`.
+
 ### 14.9 Design questions — resolved
 
 - **Swipe-to-status long-press fallback: yes, add it.** A swipe gesture alone isn't discoverable and doesn't work for assistive tech (VoiceOver/TalkBack don't reliably expose custom swipe actions). Long-pressing a row on the Status screen should surface the same status options as a menu/sheet. This is also consistent with Link Detail, which already states the status is tap-to-change (§14.6 group 6) — the row-level interaction should offer an equivalent non-gesture path, not just the swipe.

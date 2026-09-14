@@ -50,7 +50,7 @@ The mobile UI is fully designed — 31 screens across 7 flows, an interactive ta
 Key constraints when translating this into React Native:
 
 - **No border-radius anywhere**, 2px rule weight for primary dividers, 1px for hairlines, a single red accent color, Archivo (weight 800) for headings — see the token table in PROJECT.md §14.2.
-- **No icon set.** The design deliberately uses rank/count/rule-weight/letter-marks instead of icons (e.g. a domain's first letter in a ruled square instead of a favicon glyph). Don't introduce an icon library to fill this in.
+- **No icon set — except the tab bar.** The design deliberately uses rank/count/rule-weight/letter-marks instead of icons (e.g. a domain's first letter in a ruled square instead of a favicon glyph). One documented exception: the 5-tab bottom bar uses `@expo/vector-icons` (Feather) at the user's explicit request — see PROJECT.md §14.9a. Don't extend icons beyond the tab bar without the same kind of explicit call-out.
 - **Five-tab nav + floating Save block**, not the four-tab/quick-access-only shell implied by earlier drafts: Home, Search, Browse, Saved, You, plus a red "SAVE LINK" block floating bottom-right. Browse nests Categories/Collections/Tags behind a chip row; Saved nests Favorites/Status.
 - **Dark mode is a token swap, not a separate design** — same geometry, inverted ground colors (PROJECT.md §14.2).
 - The design already includes a Collections screen and Browse-tab slot even though Collections is V2 — reserve the nav slot, but keep the feature itself gated to Phase 2 (see PLAN.md).
@@ -104,12 +104,17 @@ theme/       tokens.ts (Modernist color/type tokens, PROJECT.md §14.2-14.3) + T
 store/       Redux store + typed hooks
 api/         RTK Query base api (apiSlice.ts) — inject feature endpoints into this, don't create separate createApi() instances
 types/       models.ts — client-side mirror of PROJECT.md §3; keep in sync with prisma/schema.prisma once it exists
-components/  LinkRow, TabBar (ported from the .dc.html design files), ScreenContainer, PlaceholderScreen
+mocks/       links.ts — shared placeholder dataset used by screens until apps/api exists
+hooks/       useMockLinks.ts — shaped like a future useGetLinksQuery() (RTK Query); swap the import when the API lands
+components/  LinkRow, TabBar, LetterMark, StatusBadge, Chip, SegmentedControl, Skeleton/SkeletonRow, Toast,
+             BottomSheet, Dialog, ScreenContainer, PlaceholderScreen — the full shared-component set is built
+             (PLAN.md §1.5); compose screens from these rather than styling ad hoc
 navigation/  RootNavigator (stack) + MainTabs (5-tab bottom nav) — see the comment in RootNavigator.tsx for which
              design "screens" are separate routes vs. UI states of one route
-screens/     one folder per screen group (auth, home, search, browse, save, link, saved, settings) — Home is filled
-             in as a worked example; the rest are PlaceholderScreen stand-ins with a design-ref comment and a note
-             on what that screen needs, ready to be built out against Mobile app design prompt/Screen.dc.html
+screens/     one folder per screen group (auth, home, search, browse, save, link, saved, settings). Built so far:
+             Onboarding, Sign in, Sign up, Forgot password, Home, Search — see PLAN.md §1.5 for exact status. The
+             rest are PlaceholderScreen stand-ins with a design-ref comment and a note on what that screen needs,
+             ready to be built out against Mobile app design prompt/Screen.dc.html
 ```
 
-Every route resolves to a real component today (the app runs end-to-end, just with placeholder screens and mock Home data) — there is no scaffolding step left before building out individual screens per PLAN.md §1.5.
+Every route resolves to a real component today. There is no scaffolding step left before building out remaining screens per PLAN.md §1.5 — the shared-component set (chips, bottom sheet, dialog, toast, skeleton) is done, so each remaining screen is UI composition against `Screen.dc.html`, not new infrastructure. Auth screens call no real backend yet (`TODO(auth, PLAN.md §1.1)` comments mark the spots); Home/Search read from `src/mocks/links.ts` via `useMockLinks`.

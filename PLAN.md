@@ -51,17 +51,22 @@ Goal: a working save → organize → find loop, end to end, on a real device. N
 
 Visual design is finished (Claude Design, "Modernist" system) — see [PROJECT.md](PROJECT.md) §14 and [Mobile app design prompt/Screen.dc.html](Mobile%20app%20design%20prompt/Screen.dc.html) for the authoritative layout of every screen below. Build against that markup; don't redesign from scratch.
 
-- [ ] Shared components: `LinkRow` (detailed + compact), `TabBar` (5 tabs + floating Save block), letter-mark, status/tag/filter chips, bottom sheet, toast-with-undo, skeleton row — build these first since every screen composes them
-- [ ] First run: Onboarding, Sign in, Sign up, Forgot password
-- [ ] Home: greeting + retrieval counts (Favorites/To Read/Categories/Tags) + search field + recent feed, loading (skeleton) state, empty-library state
-- [ ] Search: idle (recent searches + top tags), results (with filter-count button), no-results state, Filter & sort bottom sheet (live result count in the footer)
+**Progress: 5 of 14 screens fully built (Onboarding, Sign in, Sign up, Forgot password, Home) — first-run/auth flow and the Home "Save→Find" entry point are both complete. Search is built too (idle/results/no-results). Remaining: 8 screens still placeholder stand-ins** (title + note text — see `src/components/PlaceholderScreen.tsx`).
+
+- [x] Shared components — all built: `LinkRow` (detailed + compact, now composed from `LetterMark` + `StatusBadge` rather than inlining them), `TabBar` (5 tabs + floating Save block), `LetterMark`, `StatusBadge`, `Chip` (filter/tag pill, solid/outline/dashed), `SegmentedControl` (status row, appearance row), `Skeleton`/`SkeletonRow` (pulse animation via RN's `Animated`), `Toast` (Undo/View), `BottomSheet` (Filters), `Dialog` (Delete confirmation / Duplicate — two position variants). All in `src/components/`.
+- [x] Mock data layer: `src/mocks/links.ts` (shared dataset, replaces the per-screen inline mock links) + `src/hooks/useMockLinks.ts` (shaped like a future `useGetLinksQuery()` — swap the import, not the screen, once apps/api exists)
+- First run — **done**: Onboarding, Sign in, Sign up, Forgot password (see above)
+- Home — **done**: greeting + 4 retrieval counts + search field, loading (skeleton rows via `useMockLinks`), empty-library state, recent feed, saved-toast (wired to `route.params.justSaved`, ready for Add Link to populate once built). Offline/net-error states not yet built (need real connectivity detection — low priority until apps/api exists to actually go offline from)
+- Search — **done**: idle (recent searches + top-tag chips computed from the mock dataset), live results (filters mock links by title/url/description/notes/tags per PROJECT.md §5.1), no-results state. Filter button navigates to the (still-placeholder) Filters sheet.
 - [ ] Browse: defaults to Categories (count-first rows) → Category detail (sub-category chips); Collections and Tags one chip-tap away, in that order (Collections list is nav-slot-only in v1 — feature itself is Phase 2)
 - [ ] Add link: URL-required form, Share-to-app sheet (with double-tap-to-save on an already-selected suggestion chip, per §14.9), in-progress/metadata-failed/invalid-URL states, duplicate-detected dialog
 - [ ] Link detail (ruled meta table + Open Link as primary action), Edit link, Delete confirmation
 - [ ] Saved tab: Favorites (with empty state explaining Favorite vs. Status), Status/"To read" list with swipe-to-advance **and a long-press fallback menu** with the same status options (accessibility — see §14.9)
-- [ ] Settings (You tab), Offline state, Network-error state
+- [ ] Settings (You tab)
 - [ ] Dark mode: verify the token swap (PROJECT.md §14.2) renders correctly across all of the above rather than styling dark mode screen-by-screen
 - [ ] Responsive check at small (375×667) and large (430×932) phone sizes, per the design's own check
+
+Auth screens are currently wired to local component state only — pressing Sign In / Create Account navigates straight into the app with no real backend call (see the `TODO(auth, PLAN.md §1.1)` comments in `SignInScreen.tsx` / `SignUpScreen.tsx`). Swap those for real RTK Query calls once §1.1 and `apps/api` exist.
 
 ### 1.6 Share-to-save flow (the make-or-break UX bet)
 - [ ] Expo/RN share-extension or intent handler so LinkVault appears as a share target from other apps

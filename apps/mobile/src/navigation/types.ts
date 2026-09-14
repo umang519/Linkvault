@@ -8,8 +8,13 @@
  */
 
 export type MainTabParamList = {
-  Home: undefined;
-  Search: undefined;
+  // justSaved is set by AddLinkScreen (once built) navigating back to Home
+  // after a save, to drive the saved-toast state (PROJECT.md §14.6) —
+  // see HomeScreen.tsx.
+  Home: { justSaved?: { title: string; category: string } } | undefined;
+  // Set by Browse's Tags list (and anywhere else that wants to hand off
+  // a starting query) so Search doesn't open on its idle state.
+  Search: { initialQuery?: string } | undefined;
   Browse: undefined;
   Saved: undefined;
   You: undefined;
@@ -20,7 +25,9 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
-  Main: undefined;
+  // Supports navigating straight to a tab screen with params, e.g.
+  // navigation.navigate('Main', { screen: 'Home', params: { justSaved } }).
+  Main: { screen?: keyof MainTabParamList; params?: MainTabParamList[keyof MainTabParamList] } | undefined;
   AddLink: { sharedUrl?: string } | undefined;
   LinkDetail: { linkId: string };
   EditLink: { linkId: string };

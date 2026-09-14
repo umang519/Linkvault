@@ -1,25 +1,37 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { LinkRow } from '../../components/LinkRow';
 import { ScreenContainer } from '../../components/ScreenContainer';
+import { SkeletonRow } from '../../components/Skeleton';
+import { Toast } from '../../components/Toast';
+import { useMockLinks } from '../../hooks/useMockLinks';
 import { useTheme } from '../../theme/ThemeProvider';
 import { fonts, hairlineWidth, ruleWidth, type } from '../../theme/tokens';
-import type { Link } from '../../types/models';
 
 /**
- * Design ref: Screen.dc.html — is.home (+ is.loading / is.emptyLib / is.savedToast
- * are the same route's loading, empty and just-saved states — see
- * RootNavigator.tsx for why those aren't separate routes).
- *
- * This screen is filled in as a worked example of the LinkRow / theme
- * token pattern for the rest of the screens to follow; the data below
- * is placeholder until apps/api + RTK Query endpoints exist (PLAN.md
- * Phase 0 / §1.4).
+ * Design ref: Screen.dc.html — is.home / is.loading / is.emptyLib /
+ * is.savedToast are states of this one route (see RootNavigator.tsx for
+ * why those aren't separate routes). `useMockLinks` stands in for the
+ * real `useGetLinksQuery()` — see PLAN.md §1.4 / src/hooks/useMockLinks.ts.
  */
 export function HomeScreen() {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const { data: links, isLoading } = useMockLinks();
+
+  const [toast, setToast] = useState<{ title: string; category: string } | null>(null);
+
+  useEffect(() => {
+    const justSaved = route.params?.justSaved;
+    if (justSaved) {
+      setToast(justSaved);
+      navigation.setParams({ justSaved: undefined }); // consume it — don't re-show on next focus
+      const t = setTimeout(() => setToast(null), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [route.params?.justSaved]);
 
   const quick = [
     { n: 18, label: 'Favorites', route: 'Saved' },
@@ -29,14 +41,22 @@ export function HomeScreen() {
   ];
 
   return (
-    <ScreenContainer>
+    <ScreenContainer style={styles.container}>
       <View style={styles.header}>
         <Text style={[styles.brand, { color: colors.ink }]}>LINKVAULT</Text>
+        <Pressable
+          onPress={() => navigation.navigate('You')}
+          style={[styles.avatar, { borderColor: colors.rule }]}
+        >
+          <Text style={[styles.avatarText, { color: colors.ink }]}>RT</Text>
+        </Pressable>
       </View>
 
       <View style={styles.greetingBlock}>
         <Text style={[styles.greeting, { color: colors.ink }]}>Good evening, Ravi.</Text>
-        <Text style={[styles.sub, { color: colors.muted }]}>342 links · 12 waiting to be read</Text>
+        <Text style={[styles.sub, { color: colors.muted }]}>
+          {isLoading ? ' ' : `${links.length} links · 12 waiting to be read`}
+        </Text>
       </View>
 
       <View style={styles.searchWrap}>
@@ -71,58 +91,67 @@ export function HomeScreen() {
         </Pressable>
       </View>
 
-      <FlatList
-        data={placeholderLinks}
-        keyExtractor={(l) => l.id}
-        style={{ borderTopWidth: hairlineWidth, borderTopColor: colors.line }}
-        renderItem={({ item }) => (
-          <LinkRow link={item} onOpen={() => navigation.navigate('LinkDetail', { linkId: item.id })} />
+      <View style={[styles.listArea, { borderTopColor: colors.line, borderTopWidth: hairlineWidth }]}>
+        {isLoading ? (
+          <>
+            <SkeletonRow />
+            <SkeletonRow />
+            <SkeletonRow />
+          </>
+        ) : links.length === 0 ? (
+          <EmptyLibrary onPasteUrl={() => navigation.navigate('AddLink')} />
+        ) : (
+          <FlatList
+            data={links}
+            keyExtractor={(l) => l.id}
+            renderItem={({ item }) => (
+              <LinkRow link={item} onOpen={() => navigation.navigate('LinkDetail', { linkId: item.id })} />
+            )}
+          />
         )}
-      />
+      </View>
+
+      {toast ? (
+        <View style={styles.toastWrap}>
+          <Toast
+            title={`SAVED TO ${toast.category.toUpperCase()}`}
+            subtitle={toast.title}
+            onUndo={() => setToast(null)}
+            onView={() => setToast(null)}
+          />
+        </View>
+      ) : null}
     </ScreenContainer>
   );
 }
 
-const placeholderLinks: Link[] = [
-  {
-    id: 'usememo',
-    userId: 'u1',
-    title: 'useMemo & useCallback, properly explained',
-    url: 'https://youtube.com/watch?v=THL1OPn72vo',
-    description: '38 min — when memoisation actually helps and when it just costs you.',
-    favicon: null,
-    previewImage: null,
-    categoryId: 'c-dev-react',
-    tags: [{ id: 't1', userId: 'u1', name: 'react' }, { id: 't2', userId: 'u1', name: 'performance' }],
-    status: 'Unread',
-    isFavorite: false,
-    notes: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    lastOpenedAt: null,
-  },
-  {
-    id: 'ipo',
-    userId: 'u1',
-    title: 'IPO GMP Live — Grey Market Premium Tracker',
-    url: 'https://investorgain.com/report/ipo-gmp-live/331/',
-    description: 'Live grey-market premium table for every open and upcoming IPO.',
-    favicon: null,
-    previewImage: null,
-    categoryId: 'c-finance-stocks',
-    tags: [{ id: 't3', userId: 'u1', name: 'ipo' }, { id: 't4', userId: 'u1', name: 'gmp' }],
-    status: 'To Read',
-    isFavorite: true,
-    notes: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    lastOpenedAt: null,
-  },
-];
+function EmptyLibrary({ onPasteUrl }: { onPasteUrl: () => void }) {
+  const { colors } = useTheme();
+  return (
+    <View style={[styles.empty, { borderTopColor: colors.rule, borderBottomColor: colors.rule }]}>
+      <Text style={[styles.emptyTitle, { color: colors.ink }]}>
+        Save your first link{'\n'}in two taps.
+      </Text>
+      <Text style={[styles.emptyBody, { color: colors.muted }]}>
+        From any app — YouTube, Chrome, WhatsApp — tap Share and pick LinkVault.
+        The title and preview fill themselves in.
+      </Text>
+      <Pressable style={[styles.emptyButton, { backgroundColor: colors.accent }]} onPress={onPasteUrl}>
+        <Text style={[styles.emptyButtonText, { color: colors.inverse }]}>PASTE A URL</Text>
+      </Pressable>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-  header: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 6 },
+  container: { position: 'relative' },
+  header: {
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+    paddingHorizontal: 20, paddingTop: 12, paddingBottom: 6,
+  },
   brand: { fontFamily: fonts.heading, fontSize: 12, letterSpacing: 2.2 },
+  avatar: { width: 32, height: 32, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
+  avatarText: { fontFamily: fonts.heading, fontSize: 11 },
   greetingBlock: { paddingHorizontal: 20, paddingBottom: 16 },
   greeting: { fontFamily: fonts.heading, fontSize: type.screenTitle, lineHeight: 31 },
   sub: { fontFamily: fonts.body, fontSize: type.secondary, marginTop: 6 },
@@ -143,4 +172,11 @@ const styles = StyleSheet.create({
   },
   recentTitle: { fontFamily: fonts.heading, fontSize: 11, letterSpacing: 1.4 },
   filterLink: { fontFamily: fonts.body, fontSize: 11, letterSpacing: 0.6 },
+  listArea: { flex: 1 },
+  empty: { margin: 20, borderTopWidth: ruleWidth, borderBottomWidth: ruleWidth, paddingVertical: 24 },
+  emptyTitle: { fontFamily: fonts.heading, fontSize: 20, lineHeight: 24 },
+  emptyBody: { fontFamily: fonts.body, fontSize: type.body, lineHeight: 19, marginTop: 12 },
+  emptyButton: { marginTop: 20, height: 50, justifyContent: 'center', paddingHorizontal: 16 },
+  emptyButtonText: { fontFamily: fonts.heading, fontSize: 13.5, letterSpacing: 0.6 },
+  toastWrap: { position: 'absolute', left: 16, right: 16, bottom: 124 },
 });

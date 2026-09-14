@@ -3,6 +3,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../theme/ThemeProvider';
 import { fonts, hairlineWidth, type } from '../theme/tokens';
 import type { Link } from '../types/models';
+import { domainInitial, LetterMark } from './LetterMark';
+import { StatusBadge } from './StatusBadge';
 
 /**
  * Ported from Mobile app design prompt/LinkRow.dc.html. Detailed is the
@@ -20,8 +22,6 @@ export function LinkRow({
 }) {
   const { colors } = useTheme();
   const domain = extractDomain(link.url);
-  const initial = (domain || '?').replace(/^www\./, '').charAt(0).toUpperCase();
-  const isUnread = link.status === 'Unread';
   const visibleTags = compact ? [] : link.tags.slice(0, 3);
   const showDesc = !compact && !!link.description;
 
@@ -33,9 +33,7 @@ export function LinkRow({
         { borderBottomColor: colors.line, borderBottomWidth: hairlineWidth },
       ]}
     >
-      <View style={[styles.mark, { borderColor: colors.rule }]}>
-        <Text style={[styles.markText, { color: colors.ink }]}>{initial}</Text>
-      </View>
+      <LetterMark letter={domainInitial(link.url)} />
       <View style={styles.body}>
         <Text
           style={[styles.title, { color: colors.ink }]}
@@ -52,14 +50,7 @@ export function LinkRow({
         <View style={styles.metaRow}>
           {/* Category is rendered by the screen via a chip, kept out of
               this shared row since not every list groups by category. */}
-          <View style={[styles.statusChip, isUnread
-            ? { backgroundColor: colors.accent, borderColor: colors.accent }
-            : { borderColor: colors.line, borderWidth: hairlineWidth }]}
-          >
-            <Text style={[styles.statusText, { color: isUnread ? colors.inverse : colors.muted }]}>
-              {link.status.toUpperCase()}
-            </Text>
-          </View>
+          <StatusBadge status={link.status} />
           {visibleTags.map((tag) => (
             <Text key={tag.id} style={[styles.tag, { color: colors.muted }]}>
               #{tag.name}
@@ -86,15 +77,11 @@ function extractDomain(url: string): string {
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', gap: 12, padding: 14, alignItems: 'flex-start' },
-  mark: { width: 34, height: 34, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
-  markText: { fontFamily: fonts.heading, fontSize: 15 },
   body: { flex: 1, gap: 5 },
   title: { fontFamily: fonts.heading, fontSize: type.linkTitle, lineHeight: 19 },
   domain: { fontFamily: fonts.body, fontSize: type.label, letterSpacing: 0.8, textTransform: 'uppercase' },
   desc: { fontFamily: fonts.body, fontSize: type.secondary, lineHeight: 18 },
   metaRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, alignItems: 'center', marginTop: 2 },
-  statusChip: { paddingHorizontal: 6, paddingVertical: 4 },
-  statusText: { fontFamily: fonts.body, fontSize: type.label, letterSpacing: 0.8, textTransform: 'uppercase' },
   tag: { fontFamily: fonts.body, fontSize: 11 },
   trailing: { alignItems: 'flex-end', gap: 7, paddingTop: 2 },
   favMark: { width: 9, height: 9 },
