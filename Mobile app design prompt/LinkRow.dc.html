@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link rel="stylesheet" href="_ds/modernist-f5eeca6d-89d9-4425-9334-c68cd4d332c5/styles.css"><style>:root{--lv-bg:#f3f2f2;--lv-surf:#eae9e9;--lv-ink:#201e1d;--lv-mut:#605d5d;--lv-line:#bab6b6;--lv-rule:#201e1d;--lv-acc:#ec3013;--lv-accw:#fff2ef;--lv-inv:#f3f2f2}.lv-dark{--lv-bg:#191817;--lv-surf:#242221;--lv-ink:#f4f2f1;--lv-mut:#9b9797;--lv-line:#444141;--lv-rule:#f4f2f1;--lv-acc:#ff563c;--lv-accw:#3b1a12;--lv-inv:#191817}</style></helmet>
+<div style="display:flex;gap:12px;padding:14px 20px;border-bottom:1px solid var(--lv-line);align-items:flex-start;cursor:pointer;background:transparent" onClick="{{ onOpen }}">
+  <div style="width:34px;height:34px;flex:none;border:2px solid var(--lv-rule);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:15px;line-height:1;color:var(--lv-ink)">{{ initial }}</div>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+    <div style="font-family:var(--font-heading);font-weight:800;font-size:15px;line-height:1.25;color:var(--lv-ink);letter-spacing:-0.01em">{{ link.title }}</div>
+    <div style="font-size:10px;line-height:1;letter-spacing:.08em;text-transform:uppercase;color:var(--lv-mut)">{{ link.domain }}</div>
+    <sc-if value="{{ showDesc }}" hint-placeholder-val="{{ true }}"><div style="font-size:12.5px;line-height:1.45;color:var(--lv-mut)">{{ link.desc }}</div></sc-if>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:2px">
+      <span style="font-size:10px;line-height:1;letter-spacing:.08em;text-transform:uppercase;color:var(--lv-ink);border:1px solid var(--lv-line);padding:4px 6px">{{ link.cat }}</span>
+      <sc-if value="{{ isUnread }}" hint-placeholder-val="{{ false }}"><span style="font-size:10px;line-height:1;letter-spacing:.08em;text-transform:uppercase;color:var(--lv-inv);background:var(--lv-acc);padding:4px 6px">{{ link.status }}</span></sc-if>
+      <sc-if value="{{ isRead }}" hint-placeholder-val="{{ true }}"><span style="font-size:10px;line-height:1;letter-spacing:.08em;text-transform:uppercase;color:var(--lv-mut);border:1px solid var(--lv-line);padding:4px 6px">{{ link.status }}</span></sc-if>
+      <sc-for list="{{ tags }}" as="tag" hint-placeholder-count="2"><span style="font-size:11px;line-height:1;color:var(--lv-mut)">#{{ tag }}</span></sc-for>
+    </div>
+  </div>
+  <div style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:7px;padding-top:2px">
+    <sc-if value="{{ link.fav }}" hint-placeholder-val="{{ false }}"><span style="width:9px;height:9px;background:var(--lv-acc);display:block"></span></sc-if>
+    <span style="font-size:10px;line-height:1;color:var(--lv-mut);white-space:nowrap">{{ link.when }}</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:120},&quot;link&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;Link&quot;},&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onOpen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const l = this.props.link || {};
+    const compact = this.props.compact;
+    const st = (l.status || '').toLowerCase();
+    return {
+      link: l,
+      initial: (l.domain || '?').replace(/^www\./, '').charAt(0).toUpperCase(),
+      tags: compact ? [] : (l.tags || []).slice(0, 3),
+      showDesc: !compact && !!l.desc,
+      isUnread: st === 'unread',
+      isRead: !!l.status && st !== 'unread',
+      onOpen: this.props.onOpen
+    };
+  }
+}
+</script>
+</body>
+</html>

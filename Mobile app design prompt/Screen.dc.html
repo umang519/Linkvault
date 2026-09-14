@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link rel="stylesheet" href="_ds/modernist-f5eeca6d-89d9-4425-9334-c68cd4d332c5/styles.css"><script src="_ds/modernist-f5eeca6d-89d9-4425-9334-c68cd4d332c5/_ds_bundle.js"></script><style>:root{--lv-bg:#f3f2f2;--lv-surf:#eae9e9;--lv-ink:#201e1d;--lv-mut:#605d5d;--lv-line:#bab6b6;--lv-rule:#201e1d;--lv-acc:#ec3013;--lv-accw:#fff2ef;--lv-inv:#f3f2f2}.lv-dark{--lv-bg:#191817;--lv-surf:#242221;--lv-ink:#f4f2f1;--lv-mut:#9b9797;--lv-line:#444141;--lv-rule:#f4f2f1;--lv-acc:#ff563c;--lv-accw:#3b1a12;--lv-inv:#191817}@keyframes lvpulse{0%,100%{opacity:.35}50%{opacity:.12}}@keyframes lvspin{to{transform:rotate(360deg)}}</style></helmet>
+<div style="width:var(--lv-w,390px);height:var(--lv-h,844px);background:var(--lv-bg);color:var(--lv-ink);font-family:var(--font-body);display:flex;flex-direction:column;overflow:hidden;position:relative">
+
+  <sc-if value="{{ is.onboarding }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;padding:0 0 34px">
+    <div style="display:flex;justify-content:space-between;padding:12px 22px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:40px 22px 0"><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.18em">LINKVAULT</span></div>
+    <div style="padding:52px 22px 0"><div style="font-family:var(--font-heading);font-weight:800;font-size:46px;line-height:.96;letter-spacing:-0.03em">SAVE<br>ORGANIZE<br><span style="color:var(--lv-acc)">FIND</span></div>
+      <div style="font-size:14px;line-height:1.5;color:var(--lv-mut);margin-top:18px;max-width:270px">One vault for every link you meant to come back to. Saving takes two taps. Finding takes one search.</div></div>
+    <div style="margin-top:auto;display:flex;flex-direction:column">
+      <sc-for list="{{ onbSteps }}" as="s" hint-placeholder-count="3">
+        <div style="display:flex;gap:16px;padding:16px 22px;border-top:2px solid var(--lv-rule);align-items:baseline">
+          <span style="font-family:var(--font-heading);font-weight:800;font-size:12px;color:var(--lv-acc);width:20px;flex:none">{{ s.n }}</span>
+          <div><div style="font-family:var(--font-heading);font-weight:800;font-size:15px">{{ s.t }}</div><div style="font-size:12.5px;color:var(--lv-mut);line-height:1.4;margin-top:2px">{{ s.d }}</div></div>
+        </div>
+      </sc-for>
+      <div style="padding:22px 22px 0;display:flex;flex-direction:column;gap:10px">
+        <button style="height:52px;background:var(--lv-acc);color:var(--lv-inv);border:0;cursor:pointer;font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 18px" onClick="{{ goSignup }}">GET STARTED</button>
+        <button style="height:52px;background:transparent;color:var(--lv-ink);border:2px solid var(--lv-rule);cursor:pointer;font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 18px" onClick="{{ goSignin }}">I ALREADY HAVE AN ACCOUNT</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.signin }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;padding:0 22px 34px">
+    <div style="display:flex;justify-content:space-between;padding:12px 0 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:44px 0 0"><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.18em">LINKVAULT</span>
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:34px;line-height:1.02;letter-spacing:-0.02em;margin-top:34px">Welcome back.</div>
+      <div style="font-size:13.5px;color:var(--lv-mut);margin-top:8px">342 links waiting where you left them.</div></div>
+    <div style="margin-top:38px;display:flex;flex-direction:column;gap:20px">
+      <div><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">Email</div>
+        <div style="border:0;border-bottom:2px solid var(--lv-rule);padding-bottom:9px;font-size:16px">ravi@example.com</div></div>
+      <div><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-acc);margin-bottom:7px">Password</div>
+        <div style="border:0;border-bottom:2px solid var(--lv-acc);padding-bottom:9px;font-size:16px;letter-spacing:.2em">••••••</div>
+        <div style="font-size:12px;color:var(--lv-acc);margin-top:8px">Incorrect password. 2 attempts left.</div></div>
+    </div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:14px">
+      <button style="height:52px;background:var(--lv-acc);color:var(--lv-inv);border:0;cursor:pointer;font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 18px" onClick="{{ goHome }}">SIGN IN</button>
+      <div style="display:flex;justify-content:space-between;font-size:13px"><button style="border:0;background:transparent;padding:0;color:var(--lv-acc);cursor:pointer;font-size:13px;font-family:var(--font-body)" onClick="{{ goForgot }}">Forgot password?</button><button style="border:0;background:transparent;padding:0;color:var(--lv-ink);cursor:pointer;font-size:13px;font-family:var(--font-body)" onClick="{{ goSignup }}">Create account</button></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.signup }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;padding:0 22px 34px">
+    <div style="display:flex;justify-content:space-between;padding:12px 0 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <button style="border:0;background:transparent;padding:26px 0 0;text-align:left;font-size:12px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goSignin }}">← BACK</button>
+    <div style="font-family:var(--font-heading);font-weight:800;font-size:34px;line-height:1.02;letter-spacing:-0.02em;margin-top:26px">Create your vault.</div>
+    <div style="margin-top:34px;display:flex;flex-direction:column;gap:20px">
+      <div><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">Name</div><div style="border-bottom:2px solid var(--lv-rule);padding-bottom:9px;font-size:16px">Ravi Trivedi</div></div>
+      <div><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">Email</div><div style="border-bottom:2px solid var(--lv-rule);padding-bottom:9px;font-size:16px">ravi@example.com</div></div>
+      <div><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">Password</div><div style="border-bottom:2px solid var(--lv-line);padding-bottom:9px;font-size:16px;color:var(--lv-mut)">At least 8 characters</div>
+        <div style="display:flex;gap:5px;margin-top:10px"><span style="height:3px;flex:1;background:var(--lv-acc)"></span><span style="height:3px;flex:1;background:var(--lv-acc)"></span><span style="height:3px;flex:1;background:var(--lv-line)"></span><span style="height:3px;flex:1;background:var(--lv-line)"></span></div></div>
+    </div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:11.5px;color:var(--lv-mut);line-height:1.5">By continuing you agree to the Terms and the Privacy Policy.</div>
+      <button style="height:52px;background:var(--lv-acc);color:var(--lv-inv);border:0;cursor:pointer;font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 18px" onClick="{{ goHome }}">CREATE ACCOUNT</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.forgot }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;padding:0 22px 34px">
+    <div style="display:flex;justify-content:space-between;padding:12px 0 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <button style="border:0;background:transparent;padding:26px 0 0;text-align:left;font-size:12px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goSignin }}">← BACK</button>
+    <div style="font-family:var(--font-heading);font-weight:800;font-size:34px;line-height:1.02;letter-spacing:-0.02em;margin-top:26px">Reset password.</div>
+    <div style="font-size:13.5px;color:var(--lv-mut);margin-top:10px;line-height:1.5">Enter the email on your account. We'll send a reset link that expires in 30 minutes.</div>
+    <div style="margin-top:34px"><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">Email</div><div style="border-bottom:2px solid var(--lv-rule);padding-bottom:9px;font-size:16px">ravi@example.com</div></div>
+    <div style="margin-top:26px;border:2px solid var(--lv-rule);padding:14px 16px;display:flex;gap:12px;align-items:baseline"><span style="width:9px;height:9px;background:var(--lv-acc);flex:none"></span><div style="font-size:12.5px;line-height:1.5">Link sent. Check your inbox — and spam, occasionally.</div></div>
+    <button style="margin-top:auto;height:52px;background:var(--lv-acc);color:var(--lv-inv);border:0;cursor:pointer;font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 18px" onClick="{{ goSignin }}">SEND RESET LINK</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.home }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px 14px">
+      <span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.18em">LINKVAULT</span>
+      <button style="width:32px;height:32px;border:2px solid var(--lv-rule);background:transparent;color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:11px;cursor:pointer" onClick="{{ goSettings }}">RT</button>
+    </div>
+    <div style="padding:0 20px 16px">
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:29px;line-height:1.05;letter-spacing:-0.02em">Good evening, Ravi.</div>
+      <div style="font-size:12.5px;color:var(--lv-mut);margin-top:6px">342 links · 12 waiting to be read</div>
+    </div>
+    <div style="padding:0 20px 16px">
+      <button style="width:100%;display:flex;align-items:center;justify-content:space-between;border:2px solid var(--lv-rule);background:transparent;padding:14px 16px;cursor:pointer;font-family:var(--font-body)" onClick="{{ goSearch }}">
+        <span style="font-size:14px;color:var(--lv-mut)">Search titles, tags, notes, URLs</span>
+        <span style="font-size:10px;letter-spacing:.1em;color:var(--lv-acc);font-weight:600">SEARCH</span>
+      </button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--lv-rule)">
+      <sc-for list="{{ quick }}" as="q" hint-placeholder-count="4">
+        <button style="border:0;border-right:1px solid var(--lv-line);border-bottom:1px solid var(--lv-line);background:transparent;padding:14px 18px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;font-family:var(--font-body)" onClick="{{ q.go }}">
+          <span style="font-family:var(--font-heading);font-weight:800;font-size:22px;line-height:1;color:var(--lv-ink)">{{ q.n }}</span>
+          <span style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut)">{{ q.label }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;padding:18px 20px 10px">
+      <span style="font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Recently added</span>
+      <button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.06em;color:var(--lv-acc);cursor:pointer;font-family:var(--font-body)" onClick="{{ goFilters }}">FILTER · SORT</button>
+    </div>
+    <div style="flex:1;overflow:hidden;border-top:1px solid var(--lv-line)">
+      <sc-for list="{{ recent }}" as="l" hint-placeholder-count="3"><dc-import name="LinkRow" link="{{ l }}" on-open="{{ goDetail }}" hint-size="100%,96px"></dc-import></sc-for>
+    </div>
+    <dc-import name="TabBar" active="home" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.loading }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px 14px"><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.18em">LINKVAULT</span><span style="width:32px;height:32px;border:2px solid var(--lv-line)"></span></div>
+    <div style="padding:0 20px 16px"><div style="width:230px;height:28px;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out infinite"></div><div style="width:150px;height:11px;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out .2s infinite;margin-top:10px"></div></div>
+    <div style="padding:0 20px 16px"><div style="height:50px;border:2px solid var(--lv-line)"></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--lv-rule)"><sc-for list="{{ four }}" as="i" hint-placeholder-count="4"><div style="border-right:1px solid var(--lv-line);border-bottom:1px solid var(--lv-line);padding:14px 18px"><div style="width:38px;height:22px;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out infinite"></div><div style="width:64px;height:9px;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out .3s infinite;margin-top:8px"></div></div></sc-for></div>
+    <div style="padding:18px 20px 10px;font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lv-mut)">Loading library…</div>
+    <div style="flex:1;border-top:1px solid var(--lv-line)">
+      <sc-for list="{{ four }}" as="i" hint-placeholder-count="4">
+        <div style="display:flex;gap:12px;padding:16px 20px;border-bottom:1px solid var(--lv-line)"><div style="width:34px;height:34px;flex:none;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out infinite"></div><div style="flex:1;display:flex;flex-direction:column;gap:8px"><div style="height:13px;width:80%;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out .15s infinite"></div><div style="height:9px;width:40%;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out .3s infinite"></div><div style="height:9px;width:60%;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out .45s infinite"></div></div></div>
+      </sc-for>
+    </div>
+    <dc-import name="TabBar" active="home" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.emptyLib }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px 14px"><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.18em">LINKVAULT</span><button style="width:32px;height:32px;border:2px solid var(--lv-rule);background:transparent;color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:11px;cursor:pointer" onClick="{{ goSettings }}">RT</button></div>
+    <div style="padding:0 20px"><div style="font-family:var(--font-heading);font-weight:800;font-size:29px;line-height:1.05;letter-spacing:-0.02em">Welcome, Ravi.</div><div style="font-size:12.5px;color:var(--lv-mut);margin-top:6px">Your vault is empty.</div></div>
+    <div style="margin:26px 20px 0;border-top:2px solid var(--lv-rule);border-bottom:2px solid var(--lv-rule);padding:24px 0">
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:20px;line-height:1.2">Save your first link<br>in two taps.</div>
+      <div style="font-size:13px;color:var(--lv-mut);line-height:1.5;margin-top:12px">From any app — YouTube, Chrome, WhatsApp — tap Share and pick LinkVault. The title and preview fill themselves in.</div>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+        <button style="height:50px;background:var(--lv-acc);color:var(--lv-inv);border:0;cursor:pointer;font-family:var(--font-heading);font-weight:800;font-size:13.5px;letter-spacing:.06em;text-align:left;padding:0 16px" onClick="{{ goAdd }}">PASTE A URL</button>
+        <button style="height:50px;background:transparent;color:var(--lv-ink);border:2px solid var(--lv-rule);cursor:pointer;font-family:var(--font-heading);font-weight:800;font-size:13.5px;letter-spacing:.06em;text-align:left;padding:0 16px" onClick="{{ goSettings }}">IMPORT BROWSER BOOKMARKS</button>
+      </div>
+    </div>
+    <div style="padding:20px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut)">Nothing saved yet</div>
+    <div style="flex:1"></div>
+    <dc-import name="TabBar" active="home" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.searchIdle }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:10px 20px 16px;display:flex;gap:12px;align-items:center">
+      <div style="flex:1;border:2px solid var(--lv-acc);padding:13px 14px;display:flex;align-items:center;gap:2px"><span style="font-size:14px;color:var(--lv-mut)">Search 342 links</span><span style="width:2px;height:17px;background:var(--lv-acc);display:block;margin-left:4px"></span></div>
+      <button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.08em;color:var(--lv-ink);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">CANCEL</button>
+    </div>
+    <div style="padding:0 20px 8px;display:flex;align-items:baseline;justify-content:space-between;border-top:2px solid var(--lv-rule);padding-top:16px"><span style="font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Recent searches</span><button style="border:0;background:transparent;padding:0;font-size:11px;color:var(--lv-acc);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">CLEAR</button></div>
+    <div>
+      <sc-for list="{{ recentSearches }}" as="r" hint-placeholder-count="4">
+        <button style="width:100%;display:flex;align-items:baseline;justify-content:space-between;border:0;border-bottom:1px solid var(--lv-line);background:transparent;padding:14px 20px;cursor:pointer;text-align:left;font-family:var(--font-body)" onClick="{{ goResults }}">
+          <span style="font-size:14.5px;color:var(--lv-ink)">{{ r.q }}</span><span style="font-size:11px;color:var(--lv-mut)">{{ r.n }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="padding:20px 20px 10px;font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Search by tag</div>
+    <div style="padding:0 20px;display:flex;flex-wrap:wrap;gap:8px">
+      <sc-for list="{{ topTags }}" as="t" hint-placeholder-count="8"><button style="border:1px solid var(--lv-line);background:transparent;color:var(--lv-ink);padding:7px 11px;font-size:12px;cursor:pointer;font-family:var(--font-body)" onClick="{{ goResults }}">#{{ t.name }} <span style="color:var(--lv-mut)">{{ t.n }}</span></button></sc-for>
+    </div>
+    <div style="padding:22px 20px 10px;font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Try</div>
+    <div style="padding:0 20px;font-size:13px;color:var(--lv-mut);line-height:1.7">unread react · finance last 30 days<br>notes: "for the LinkVault app"</div>
+    <div style="flex:1"></div>
+    <dc-import name="TabBar" active="search" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.search }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:10px 20px 14px;display:flex;gap:12px;align-items:center">
+      <div style="flex:1;border:2px solid var(--lv-acc);padding:13px 14px;display:flex;align-items:center"><span style="font-size:15px;color:var(--lv-ink)">react</span><span style="width:2px;height:17px;background:var(--lv-acc);display:block;margin-left:3px"></span></div>
+      <button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.08em;color:var(--lv-ink);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">CANCEL</button>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-top:2px solid var(--lv-rule);border-bottom:1px solid var(--lv-line)">
+      <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--lv-mut)">7 links · title, url, notes, tags</span>
+      <button style="border:0;background:var(--lv-acc);color:var(--lv-inv);padding:6px 10px;font-size:10px;letter-spacing:.08em;cursor:pointer;font-family:var(--font-heading);font-weight:800" onClick="{{ goFilters }}">FILTER 2</button>
+    </div>
+    <div style="flex:1;overflow:hidden">
+      <sc-for list="{{ results }}" as="l" hint-placeholder-count="3"><dc-import name="LinkRow" link="{{ l }}" on-open="{{ goDetail }}" hint-size="100%,96px"></dc-import></sc-for>
+    </div>
+    <div style="flex:none;background:var(--lv-surf);border-top:2px solid var(--lv-rule);padding:8px 4px 26px">
+      <sc-for list="{{ keys }}" as="row" hint-placeholder-count="4">
+        <div style="display:flex;gap:5px;justify-content:center;padding:4px 2px">
+          <sc-for list="{{ row.k }}" as="k" hint-placeholder-count="10"><span style="min-width:31px;padding:11px 0;text-align:center;background:var(--lv-bg);border:1px solid var(--lv-line);font-size:15px;flex:{{ row.f }}">{{ k }}</span></sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.noResults }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:10px 20px 14px;display:flex;gap:12px;align-items:center">
+      <div style="flex:1;border:2px solid var(--lv-acc);padding:13px 14px;display:flex;align-items:center"><span style="font-size:15px;color:var(--lv-ink)">graphql subscriptions</span><span style="width:2px;height:17px;background:var(--lv-acc);display:block;margin-left:3px"></span></div>
+      <button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.08em;color:var(--lv-ink);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">CANCEL</button>
+    </div>
+    <div style="border-top:2px solid var(--lv-rule);padding:30px 20px">
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:22px;line-height:1.15">No links match<br>“graphql subscriptions”.</div>
+      <div style="font-size:13px;color:var(--lv-mut);line-height:1.55;margin-top:12px">Searched titles, URLs, descriptions, notes, tags and categories. Two filters are still active — clearing them widens the search.</div>
+      <div style="margin-top:22px;display:flex;flex-direction:column;gap:10px">
+        <button style="height:48px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goResults }}">CLEAR FILTERS · DEVELOPMENT, UNREAD</button>
+        <button style="height:48px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goAdd }}">SAVE A LINK FOR THIS INSTEAD</button>
+      </div>
+    </div>
+    <div style="padding:6px 20px 0;font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lv-mut)">Closest tags</div>
+    <div style="padding:12px 20px;display:flex;flex-wrap:wrap;gap:8px"><span style="border:1px solid var(--lv-line);padding:7px 11px;font-size:12px">#graphql <span style="color:var(--lv-mut)">0</span></span><span style="border:1px solid var(--lv-line);padding:7px 11px;font-size:12px">#api <span style="color:var(--lv-mut)">9</span></span><span style="border:1px solid var(--lv-line);padding:7px 11px;font-size:12px">#websockets <span style="color:var(--lv-mut)">3</span></span></div>
+    <div style="flex:1"></div>
+    <dc-import name="TabBar" active="search" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.filters }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:8px 20px 14px;font-family:var(--font-heading);font-weight:800;font-size:24px">Library</div>
+    <div style="opacity:.25"><sc-for list="{{ recent }}" as="l" hint-placeholder-count="2"><dc-import name="LinkRow" link="{{ l }}" hint-size="100%,96px"></dc-import></sc-for></div>
+    <div style="position:absolute;inset:0;background:rgba(24,23,22,.45)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;height:690px;background:var(--lv-bg);border-top:2px solid var(--lv-rule);display:flex;flex-direction:column;box-shadow:var(--shadow-lg)">
+      <div style="display:flex;justify-content:center;padding:10px 0 0"><span style="width:46px;height:3px;background:var(--lv-line);display:block"></span></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;padding:14px 20px 14px;border-bottom:2px solid var(--lv-rule)">
+        <span style="font-family:var(--font-heading);font-weight:800;font-size:19px">Filter &amp; sort</span>
+        <button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.08em;color:var(--lv-acc);cursor:pointer;font-family:var(--font-body)" onClick="{{ goResults }}">RESET ALL</button>
+      </div>
+      <div style="flex:1;overflow:hidden">
+        <sc-for list="{{ filterGroups }}" as="g" hint-placeholder-count="5">
+          <div style="padding:14px 20px;border-bottom:1px solid var(--lv-line)">
+            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:10px">{{ g.label }}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px">
+              <sc-for list="{{ g.opts }}" as="o" hint-placeholder-count="4"><span style="padding:7px 11px;font-size:12px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }}">{{ o.t }}</span></sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--lv-line)">
+          <span style="font-size:13.5px">Favorites only</span>
+          <span style="width:46px;height:24px;background:var(--lv-acc);display:flex;align-items:center;justify-content:flex-end;padding:3px"><span style="width:18px;height:18px;background:var(--lv-inv);display:block"></span></span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--lv-line)">
+          <span style="font-size:13.5px">Sort</span>
+          <span style="font-size:13px;color:var(--lv-acc)">Newest first</span>
+        </div>
+      </div>
+      <div style="border-top:2px solid var(--lv-rule);padding:14px 20px 26px;display:flex;gap:10px;align-items:center">
+        <button style="flex:none;height:50px;padding:0 16px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer" onClick="{{ goResults }}">RESET</button>
+        <button style="flex:1;height:50px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goResults }}">SHOW 14 LINKS</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.categories }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;padding:8px 20px 14px">
+      <div><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;letter-spacing:-0.02em">Categories</div><div style="font-size:12px;color:var(--lv-mut);margin-top:4px">6 categories · 24 sub-categories</div></div>
+      <button style="border:0;background:var(--lv-acc);color:var(--lv-inv);padding:9px 12px;font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.08em;cursor:pointer" onClick="{{ goCategories }}">NEW</button>
+    </div>
+    <div style="display:flex;gap:8px;padding:0 20px 14px"><span style="padding:6px 10px;font-size:11.5px;background:var(--lv-acc);color:var(--lv-inv)">Categories</span><button style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line);background:transparent;color:var(--lv-ink);cursor:pointer;font-family:var(--font-body)" onClick="{{ goCollections }}">Collections</button><button style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line);background:transparent;color:var(--lv-ink);cursor:pointer;font-family:var(--font-body)" onClick="{{ goTags }}">Tags</button></div>
+    <div style="flex:1;border-top:2px solid var(--lv-rule);overflow:hidden">
+      <sc-for list="{{ categories }}" as="c" hint-placeholder-count="6">
+        <button style="width:100%;display:flex;gap:14px;align-items:baseline;border:0;border-bottom:1px solid var(--lv-line);background:transparent;padding:15px 20px;text-align:left;cursor:pointer;font-family:var(--font-body)" onClick="{{ goCategoryDetail }}">
+          <span style="font-family:var(--font-heading);font-weight:800;font-size:20px;line-height:1;width:38px;flex:none;color:var(--lv-acc)">{{ c.n }}</span>
+          <span style="flex:1;min-width:0"><span style="display:block;font-family:var(--font-heading);font-weight:800;font-size:16px;color:var(--lv-ink)">{{ c.name }}</span><span style="display:block;font-size:11.5px;color:var(--lv-mut);margin-top:3px;line-height:1.4">{{ c.subs }}</span></span>
+          <span style="font-size:14px;color:var(--lv-mut);flex:none">›</span>
+        </button>
+      </sc-for>
+    </div>
+    <dc-import name="TabBar" active="browse" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.categoryDetail }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px 10px">
+      <button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goCategories }}">← CATEGORIES</button>
+      <button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-acc);cursor:pointer;font-family:var(--font-body)" onClick="{{ goCategories }}">EDIT</button>
+    </div>
+    <div style="padding:6px 20px 14px"><div style="font-family:var(--font-heading);font-weight:800;font-size:30px;letter-spacing:-0.02em">Development</div><div style="font-size:12px;color:var(--lv-mut);margin-top:4px">84 links · 7 sub-categories · 31 unread</div></div>
+    <div style="padding:0 20px 14px"><div style="border:2px solid var(--lv-rule);padding:11px 13px;font-size:13.5px;color:var(--lv-mut)">Search within Development</div></div>
+    <div style="display:flex;gap:7px;padding:0 20px 14px;overflow:hidden"><span style="padding:6px 10px;font-size:11.5px;background:var(--lv-acc);color:var(--lv-inv);white-space:nowrap">All 84</span><span style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line);white-space:nowrap">React 29</span><span style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line);white-space:nowrap">Node.js 14</span><span style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line);white-space:nowrap">AWS 11</span><span style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line);white-space:nowrap">Git 8</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:2px solid var(--lv-rule);border-bottom:1px solid var(--lv-line)"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--lv-mut)">Newest first</span><button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.08em;color:var(--lv-acc);cursor:pointer;font-family:var(--font-body)" onClick="{{ goFilters }}">FILTER · SORT</button></div>
+    <div style="flex:1;overflow:hidden"><sc-for list="{{ devLinks }}" as="l" hint-placeholder-count="4"><dc-import name="LinkRow" link="{{ l }}" on-open="{{ goDetail }}" hint-size="100%,96px"></dc-import></sc-for></div>
+    <dc-import name="TabBar" active="browse" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.add }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 14px;border-bottom:2px solid var(--lv-rule)">
+      <button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">CANCEL</button>
+      <span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.14em">SAVE LINK</span>
+      <button style="border:0;background:transparent;padding:0;font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.1em;color:var(--lv-acc);cursor:pointer" onClick="{{ goSaved }}">SAVE</button>
+    </div>
+    <div style="padding:20px 20px 16px">
+      <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-acc);margin-bottom:8px">URL — required</div>
+      <div style="border:2px solid var(--lv-acc);padding:14px;font-size:14.5px;line-height:1.4;word-break:break-all">youtube.com/watch?v=THL1OPn72vo<span style="width:2px;height:17px;background:var(--lv-acc);display:inline-block;vertical-align:-3px;margin-left:2px"></span></div>
+      <div style="display:flex;gap:8px;margin-top:10px"><span style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line);color:var(--lv-mut)">Pasted from clipboard</span><span style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line);color:var(--lv-mut)">Normalised · 2 params stripped</span></div>
+    </div>
+    <div style="margin:0 20px;border:2px solid var(--lv-rule);padding:14px;display:flex;gap:12px;align-items:flex-start">
+      <div style="width:56px;height:40px;flex:none;border:1px solid var(--lv-line);background:var(--lv-surf);display:grid;place-items:center;font-size:9px;letter-spacing:.08em;color:var(--lv-mut);text-align:center">OG<br>IMAGE</div>
+      <div style="flex:1;min-width:0"><div style="font-family:var(--font-heading);font-weight:800;font-size:14.5px;line-height:1.25">useMemo &amp; useCallback, properly explained</div><div style="font-size:11px;color:var(--lv-mut);margin-top:5px">Title, description and preview detected automatically</div></div>
+    </div>
+    <div style="flex:1;overflow:hidden;margin-top:18px;border-top:1px solid var(--lv-line)">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--lv-line)"><span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut)">Category</span><span style="font-size:13.5px;color:var(--lv-acc)">Development › React ›</span></div>
+      <div style="padding:14px 20px;border-bottom:1px solid var(--lv-line)"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:9px">Tags — optional</div><div style="display:flex;flex-wrap:wrap;gap:7px"><span style="padding:6px 10px;font-size:12px;background:var(--lv-acc);color:var(--lv-inv)">react ×</span><span style="padding:6px 10px;font-size:12px;background:var(--lv-acc);color:var(--lv-inv)">performance ×</span><span style="padding:6px 10px;font-size:12px;border:1px dashed var(--lv-line);color:var(--lv-mut)">+ add tag</span></div></div>
+      <div style="padding:14px 20px;border-bottom:1px solid var(--lv-line)"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:9px">Status</div><div style="display:flex;border:1px solid var(--lv-line)"><span style="flex:1;text-align:center;padding:8px 0;font-size:11.5px;background:var(--lv-acc);color:var(--lv-inv)">Unread</span><span style="flex:1;text-align:center;padding:8px 0;font-size:11.5px;border-left:1px solid var(--lv-line)">To Read</span><span style="flex:1;text-align:center;padding:8px 0;font-size:11.5px;border-left:1px solid var(--lv-line)">Reading</span><span style="flex:1;text-align:center;padding:8px 0;font-size:11.5px;border-left:1px solid var(--lv-line)">Read</span></div></div>
+      <div style="padding:14px 20px;border-bottom:1px solid var(--lv-line)"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">Notes — optional</div><div style="font-size:13px;color:var(--lv-mut)">Why am I saving this?</div></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px"><span style="font-size:13.5px">Mark as favorite</span><span style="width:46px;height:24px;border:1px solid var(--lv-line);display:flex;align-items:center;padding:3px"><span style="width:18px;height:18px;background:var(--lv-line);display:block"></span></span></div>
+    </div>
+    <div style="border-top:2px solid var(--lv-rule);padding:12px 20px 26px"><button style="width:100%;height:52px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 18px;cursor:pointer" onClick="{{ goSaved }}">SAVE TO DEVELOPMENT › REACT</button></div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.addLoading }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 14px;border-bottom:2px solid var(--lv-rule)"><button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">CANCEL</button><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.14em">SAVE LINK</span><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.1em;color:var(--lv-mut)">SAVE</span></div>
+    <div style="padding:20px"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:8px">URL</div><div style="border:2px solid var(--lv-rule);padding:14px;font-size:14.5px;word-break:break-all">investorgain.com/report/ipo-gmp-live/331/</div></div>
+    <div style="margin:0 20px;border:2px solid var(--lv-rule);padding:16px">
+      <div style="display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border:2px solid var(--lv-acc);border-right-color:transparent;display:block;animation:lvspin .8s linear infinite"></span><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.1em">READING THE PAGE…</span></div>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:9px"><div style="height:14px;width:85%;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out infinite"></div><div style="height:10px;width:55%;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out .2s infinite"></div><div style="height:10px;width:70%;background:var(--lv-ink);animation:lvpulse 1.4s ease-in-out .4s infinite"></div></div>
+      <div style="font-size:11.5px;color:var(--lv-mut);margin-top:16px;line-height:1.5">Fetching title, description, favicon and preview image. You can keep filling the rest in.</div>
+    </div>
+    <div style="flex:1"></div>
+    <div style="border-top:2px solid var(--lv-rule);padding:12px 20px 26px"><button style="width:100%;height:52px;background:var(--lv-acc);border:0;color:var(--lv-inv);opacity:.5;font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 18px">SAVING…</button></div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.metaFail }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 14px;border-bottom:2px solid var(--lv-rule)"><button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">CANCEL</button><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.14em">SAVE LINK</span><button style="border:0;background:transparent;padding:0;font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.1em;color:var(--lv-acc);cursor:pointer" onClick="{{ goSaved }}">SAVE</button></div>
+    <div style="padding:20px"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:8px">URL</div><div style="border:2px solid var(--lv-rule);padding:14px;font-size:14.5px;word-break:break-all">internal.acme-corp.net/wiki/deploy-runbook</div></div>
+    <div style="margin:0 20px;border:2px solid var(--lv-acc);padding:16px"><div style="font-family:var(--font-heading);font-weight:800;font-size:14px;color:var(--lv-acc);letter-spacing:.02em">COULDN'T READ THIS PAGE</div><div style="font-size:12.5px;color:var(--lv-mut);line-height:1.5;margin-top:8px">The site blocked the request, so there's no title or preview. Type a title and it saves normally.</div><button style="margin-top:14px;height:42px;padding:0 14px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.06em;cursor:pointer" onClick="{{ goAdd }}">RETRY FETCH</button></div>
+    <div style="padding:20px"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-acc);margin-bottom:8px">Title — required now</div><div style="border-bottom:2px solid var(--lv-acc);padding-bottom:9px;font-size:15.5px">Deploy runbook<span style="width:2px;height:17px;background:var(--lv-acc);display:inline-block;vertical-align:-3px;margin-left:2px"></span></div></div>
+    <div style="padding:0 20px"><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-top:1px solid var(--lv-line)"><span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut)">Category</span><span style="font-size:13.5px;color:var(--lv-mut)">Choose ›</span></div></div>
+    <div style="flex:1"></div>
+    <div style="border-top:2px solid var(--lv-rule);padding:12px 20px 26px"><button style="width:100%;height:52px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 18px;cursor:pointer" onClick="{{ goSaved }}">SAVE ANYWAY</button></div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.invalidUrl }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 14px;border-bottom:2px solid var(--lv-rule)"><button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">CANCEL</button><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.14em">SAVE LINK</span><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.1em;color:var(--lv-mut)">SAVE</span></div>
+    <div style="padding:20px"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-acc);margin-bottom:8px">URL — required</div><div style="border:2px solid var(--lv-acc);padding:14px;font-size:14.5px">htp:/investorgain<span style="width:2px;height:17px;background:var(--lv-acc);display:inline-block;vertical-align:-3px;margin-left:2px"></span></div><div style="display:flex;gap:9px;margin-top:10px;align-items:baseline"><span style="width:9px;height:9px;background:var(--lv-acc);flex:none;margin-top:4px"></span><div style="font-size:12.5px;color:var(--lv-acc);line-height:1.45">That isn't a valid URL. Check the scheme — did you mean <span style="text-decoration:underline">https://investorgain.com</span>?</div></div><button style="margin-top:14px;height:42px;padding:0 14px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.06em;cursor:pointer" onClick="{{ goAdd }}">USE SUGGESTION</button></div>
+    <div style="flex:1;border-top:1px solid var(--lv-line);margin-top:8px;padding:20px;font-size:12.5px;color:var(--lv-mut);line-height:1.6">Nothing else is required yet. Category, tags, status and notes stay optional until the URL is valid.</div>
+    <div style="border-top:2px solid var(--lv-rule);padding:12px 20px 26px"><button style="width:100%;height:52px;background:var(--lv-acc);border:0;color:var(--lv-inv);opacity:.45;font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 18px">SAVE</button></div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.share }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;background:#0d0c0c">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600;color:#f4f2f1"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:18px 20px;color:#f4f2f1"><div style="font-size:10px;letter-spacing:.14em;opacity:.6">YOUTUBE</div><div style="height:170px;border:1px solid #3a3838;margin-top:12px;display:grid;place-items:center;font-size:10px;letter-spacing:.1em;color:#6f6b6b">VIDEO PLAYER</div><div style="font-family:var(--font-heading);font-weight:800;font-size:15px;margin-top:12px;opacity:.55">useMemo &amp; useCallback, properly explained</div></div>
+    <div style="position:absolute;inset:0;background:rgba(10,10,10,.6)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;background:var(--lv-bg);color:var(--lv-ink);border-top:2px solid var(--lv-acc);box-shadow:var(--shadow-lg)">
+      <div style="display:flex;justify-content:center;padding:10px 0 0"><span style="width:46px;height:3px;background:var(--lv-line);display:block"></span></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:2px solid var(--lv-rule)"><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.14em">SAVE TO LINKVAULT</span><button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">CLOSE</button></div>
+      <div style="display:flex;gap:12px;padding:16px 20px;border-bottom:1px solid var(--lv-line)">
+        <div style="width:64px;height:46px;flex:none;border:1px solid var(--lv-line);background:var(--lv-surf);display:grid;place-items:center;font-size:9px;letter-spacing:.08em;color:var(--lv-mut);text-align:center">PREVIEW</div>
+        <div style="flex:1;min-width:0"><div style="font-family:var(--font-heading);font-weight:800;font-size:15px;line-height:1.25">useMemo &amp; useCallback, properly explained</div><div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--lv-mut);margin-top:5px">youtube.com · detected automatically</div></div>
+      </div>
+      <div style="padding:14px 20px;border-bottom:1px solid var(--lv-line)"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:9px">Suggested category</div><div style="display:flex;gap:7px"><span style="padding:7px 11px;font-size:12px;background:var(--lv-acc);color:var(--lv-inv)">Development › React</span><span style="padding:7px 11px;font-size:12px;border:1px solid var(--lv-line)">Learning › YouTube</span></div></div>
+      <div style="padding:14px 20px;border-bottom:1px solid var(--lv-line)"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:9px">Suggested tags</div><div style="display:flex;flex-wrap:wrap;gap:7px"><span style="padding:7px 11px;font-size:12px;background:var(--lv-acc);color:var(--lv-inv)">react</span><span style="padding:7px 11px;font-size:12px;background:var(--lv-acc);color:var(--lv-inv)">performance</span><span style="padding:7px 11px;font-size:12px;border:1px solid var(--lv-line);color:var(--lv-mut)">+ video</span></div></div>
+      <div style="display:flex;gap:10px;padding:14px 20px 28px"><button style="flex:none;width:58px;height:52px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:10px;letter-spacing:.06em;cursor:pointer" onClick="{{ goAdd }}">MORE</button><button style="flex:1;height:52px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goSaved }}">SAVE — ONE TAP</button></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.duplicate }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:10px 20px 14px;border-bottom:2px solid var(--lv-rule);font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.14em;text-align:center">SAVE LINK</div>
+    <div style="padding:20px;opacity:.3"><div style="border:2px solid var(--lv-rule);padding:14px;font-size:14.5px;word-break:break-all">investorgain.com/report/ipo-gmp-live/331/</div></div>
+    <div style="position:absolute;inset:0;background:rgba(24,23,22,.5)"></div>
+    <div style="position:absolute;left:16px;right:16px;top:180px;background:var(--lv-bg);border:2px solid var(--lv-rule);box-shadow:var(--shadow-lg)">
+      <div style="background:var(--lv-acc);color:var(--lv-inv);padding:12px 16px;font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.12em">ALREADY IN YOUR VAULT</div>
+      <div style="padding:16px"><div style="font-size:13px;color:var(--lv-mut);line-height:1.5">You saved this 2 hours ago. Same URL after stripping tracking parameters.</div>
+        <div style="margin-top:14px;border:1px solid var(--lv-line);padding:12px;display:flex;gap:10px"><div style="width:30px;height:30px;flex:none;border:2px solid var(--lv-rule);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:13px">I</div><div style="flex:1;min-width:0"><div style="font-family:var(--font-heading);font-weight:800;font-size:14px;line-height:1.25">IPO GMP Live — Grey Market Premium Tracker</div><div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--lv-mut);margin-top:4px">Finance · Stocks · To Read</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-top:16px"><button style="height:48px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goDetail }}">OPEN THE EXISTING LINK</button><button style="height:48px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goSaved }}">SAVE A SECOND COPY</button><button style="height:44px;background:transparent;border:0;color:var(--lv-mut);font-size:12.5px;letter-spacing:.04em;text-align:left;padding:0 2px;cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">Cancel</button></div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.detail }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 12px">
+      <button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goHome }}">← LIBRARY</button>
+      <div style="display:flex;gap:14px"><button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-acc);cursor:pointer;font-family:var(--font-body)" onClick="{{ goEdit }}">EDIT</button><button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goDelete }}">DELETE</button></div>
+    </div>
+    <div style="padding:8px 20px 18px;border-bottom:2px solid var(--lv-rule)">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px"><div style="width:40px;height:40px;flex:none;border:2px solid var(--lv-rule);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:17px">Y</div><div><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut)">youtube.com</div><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-acc);margin-top:3px">FAVORITE · UNREAD</div></div></div>
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:26px;line-height:1.1;letter-spacing:-0.02em">useMemo &amp; useCallback, properly explained</div>
+      <div style="font-size:13px;color:var(--lv-mut);line-height:1.55;margin-top:10px">38 min — when memoisation actually helps and when it just costs you. Covers referential equality, the dependency array and React Compiler.</div>
+      <div style="font-size:11.5px;color:var(--lv-mut);margin-top:12px;word-break:break-all;text-decoration:underline">youtube.com/watch?v=THL1OPn72vo</div>
+    </div>
+    <div style="flex:1;overflow:hidden">
+      <sc-for list="{{ detailMeta }}" as="m" hint-placeholder-count="6">
+        <div style="display:flex;gap:16px;padding:12px 20px;border-bottom:1px solid var(--lv-line);align-items:baseline"><span style="width:92px;flex:none;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut)">{{ m.k }}</span><span style="flex:1;font-size:13.5px;line-height:1.45">{{ m.v }}</span></div>
+      </sc-for>
+      <div style="padding:14px 20px"><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">Notes</div><div style="font-size:13.5px;line-height:1.5">Watch before refactoring the link list — the memo on LinkRow is probably pointless.</div></div>
+    </div>
+    <div style="border-top:2px solid var(--lv-rule);padding:12px 20px 26px;display:flex;gap:10px">
+      <button style="flex:1;height:54px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:14.5px;letter-spacing:.06em;text-align:left;padding:0 18px;cursor:pointer" onClick="{{ goHome }}">OPEN LINK</button>
+      <button style="flex:none;width:64px;height:54px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:10px;letter-spacing:.06em;cursor:pointer" onClick="{{ goHome }}">SHARE</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.edit }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 14px;border-bottom:2px solid var(--lv-rule)"><button style="border:0;background:transparent;padding:0;font-size:11px;letter-spacing:.1em;color:var(--lv-mut);cursor:pointer;font-family:var(--font-body)" onClick="{{ goDetail }}">CANCEL</button><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.14em">EDIT LINK</span><button style="border:0;background:transparent;padding:0;font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.1em;color:var(--lv-acc);cursor:pointer" onClick="{{ goSaved }}">DONE</button></div>
+    <div style="padding:18px 20px 14px"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">Title</div><div style="border-bottom:2px solid var(--lv-rule);padding-bottom:9px;font-size:15.5px;line-height:1.3">useMemo &amp; useCallback, properly explained</div></div>
+    <div style="padding:0 20px 16px"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">URL</div><div style="border-bottom:1px solid var(--lv-line);padding-bottom:9px;font-size:13px;color:var(--lv-mut);word-break:break-all">youtube.com/watch?v=THL1OPn72vo</div></div>
+    <div style="flex:1;overflow:hidden;border-top:1px solid var(--lv-line)">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--lv-line)"><span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut)">Category</span><span style="font-size:13.5px;color:var(--lv-acc)">Development › React ›</span></div>
+      <div style="padding:14px 20px;border-bottom:1px solid var(--lv-line)"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:9px">Tags</div><div style="display:flex;flex-wrap:wrap;gap:7px"><span style="padding:6px 10px;font-size:12px;background:var(--lv-acc);color:var(--lv-inv)">react ×</span><span style="padding:6px 10px;font-size:12px;background:var(--lv-acc);color:var(--lv-inv)">performance ×</span><span style="padding:6px 10px;font-size:12px;background:var(--lv-acc);color:var(--lv-inv)">video ×</span><span style="padding:6px 10px;font-size:12px;border:1px dashed var(--lv-line);color:var(--lv-mut)">+ add</span></div></div>
+      <div style="padding:14px 20px;border-bottom:1px solid var(--lv-line)"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:9px">Status</div><div style="display:flex;flex-wrap:wrap;gap:7px"><span style="padding:7px 11px;font-size:12px;border:1px solid var(--lv-line);color:var(--lv-mut)">Unread</span><span style="padding:7px 11px;font-size:12px;background:var(--lv-acc);color:var(--lv-inv)">Reading</span><span style="padding:7px 11px;font-size:12px;border:1px solid var(--lv-line);color:var(--lv-mut)">Read</span><span style="padding:7px 11px;font-size:12px;border:1px solid var(--lv-line);color:var(--lv-mut)">Reference</span></div></div>
+      <div style="padding:14px 20px;border-bottom:1px solid var(--lv-line)"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:7px">Notes</div><div style="font-size:13.5px;line-height:1.5">Watch before refactoring the link list — the memo on LinkRow is probably pointless.<span style="width:2px;height:16px;background:var(--lv-acc);display:inline-block;vertical-align:-3px;margin-left:2px"></span></div></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px"><span style="font-size:13.5px">Favorite</span><span style="width:46px;height:24px;background:var(--lv-acc);display:flex;align-items:center;justify-content:flex-end;padding:3px"><span style="width:18px;height:18px;background:var(--lv-inv);display:block"></span></span></div>
+    </div>
+    <div style="border-top:2px solid var(--lv-rule);padding:12px 20px 26px;display:flex;gap:10px"><button style="flex:1;height:52px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:14px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goSaved }}">SAVE CHANGES</button><button style="flex:none;width:74px;height:52px;background:transparent;border:2px solid var(--lv-acc);color:var(--lv-acc);font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.06em;cursor:pointer" onClick="{{ goDelete }}">DELETE</button></div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.favorites }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:8px 20px 14px"><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;letter-spacing:-0.02em">Favorites</div><div style="font-size:12px;color:var(--lv-mut);margin-top:4px">18 links you keep coming back to</div></div>
+    <div style="padding:0 20px 14px"><div style="border:2px solid var(--lv-rule);padding:11px 13px;font-size:13.5px;color:var(--lv-mut)">Search favorites</div></div>
+    <div style="display:flex;gap:7px;padding:0 20px 14px"><span style="padding:6px 10px;font-size:11.5px;background:var(--lv-acc);color:var(--lv-inv)">All 18</span><span style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line)">Development 7</span><span style="padding:6px 10px;font-size:11.5px;border:1px solid var(--lv-line)">Finance 5</span></div>
+    <div style="flex:1;overflow:hidden;border-top:2px solid var(--lv-rule)"><sc-for list="{{ favLinks }}" as="l" hint-placeholder-count="3"><dc-import name="LinkRow" link="{{ l }}" on-open="{{ goDetail }}" hint-size="100%,96px"></dc-import></sc-for></div>
+    <dc-import name="TabBar" active="saved" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.emptyFav }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:8px 20px 14px"><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;letter-spacing:-0.02em">Favorites</div><div style="font-size:12px;color:var(--lv-mut);margin-top:4px">Nothing marked yet</div></div>
+    <div style="margin:10px 20px 0;border-top:2px solid var(--lv-rule);border-bottom:2px solid var(--lv-rule);padding:26px 0">
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1.25">Favorites are for the<br>ten links you reopen.</div>
+      <div style="font-size:13px;color:var(--lv-mut);line-height:1.55;margin-top:12px">Status tracks what you're working through. Favorite marks what you return to — docs, dashboards, the GMP tracker.</div>
+      <button style="margin-top:20px;height:48px;padding:0 16px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer" onClick="{{ goHome }}">BROWSE THE LIBRARY</button>
+    </div>
+    <div style="flex:1"></div>
+    <dc-import name="TabBar" active="saved" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.status }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:8px 20px 12px"><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;letter-spacing:-0.02em">To read</div><div style="font-size:12px;color:var(--lv-mut);margin-top:4px">Swipe a row to move it along</div></div>
+    <div style="display:flex;gap:7px;padding:0 20px 14px;overflow:hidden"><sc-for list="{{ statusTabs }}" as="s" hint-placeholder-count="6"><span style="padding:6px 10px;font-size:11.5px;white-space:nowrap;border:1px solid {{ s.bd }};background:{{ s.bg }};color:{{ s.fg }}">{{ s.t }}</span></sc-for></div>
+    <div style="border-top:2px solid var(--lv-rule);display:flex;align-items:stretch;border-bottom:1px solid var(--lv-line)">
+      <div style="flex:1;min-width:0;display:flex;gap:12px;padding:14px 0 14px 20px;align-items:flex-start">
+        <div style="width:34px;height:34px;flex:none;border:2px solid var(--lv-rule);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:15px">I</div>
+        <div style="flex:1;min-width:0"><div style="font-family:var(--font-heading);font-weight:800;font-size:15px;line-height:1.25">IPO GMP Live — Grey Market Premium Tracker</div><div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--lv-mut);margin-top:5px">investorgain.com</div></div>
+      </div>
+      <div style="flex:none;display:flex"><span style="width:56px;background:var(--lv-acc);color:var(--lv-inv);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:9.5px;letter-spacing:.06em;text-align:center">START<br>READING</span><span style="width:52px;background:var(--lv-ink);color:var(--lv-bg);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:9.5px;letter-spacing:.06em;text-align:center">MARK<br>READ</span></div>
+    </div>
+    <div style="flex:1;overflow:hidden"><sc-for list="{{ toReadLinks }}" as="l" hint-placeholder-count="3"><dc-import name="LinkRow" link="{{ l }}" on-open="{{ goDetail }}" hint-size="100%,96px"></dc-import></sc-for></div>
+    <dc-import name="TabBar" active="saved" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.tags }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;padding:8px 20px 14px"><div><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;letter-spacing:-0.02em">Tags</div><div style="font-size:12px;color:var(--lv-mut);margin-top:4px">41 tags across 342 links</div></div><button style="border:0;background:var(--lv-acc);color:var(--lv-inv);padding:9px 12px;font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.08em;cursor:pointer" onClick="{{ goTags }}">NEW</button></div>
+    <div style="padding:0 20px 14px"><div style="border:2px solid var(--lv-rule);padding:11px 13px;font-size:13.5px;color:var(--lv-mut)">Search tags</div></div>
+    <div style="flex:1;overflow:hidden;border-top:2px solid var(--lv-rule)">
+      <sc-for list="{{ tagList }}" as="t" hint-placeholder-count="8">
+        <button style="width:100%;display:flex;align-items:baseline;gap:12px;border:0;border-bottom:1px solid var(--lv-line);background:transparent;padding:13px 20px;text-align:left;cursor:pointer;font-family:var(--font-body)" onClick="{{ goResults }}">
+          <span style="flex:1;font-size:14.5px;color:var(--lv-ink)">#{{ t.name }}</span>
+          <span style="font-size:11px;color:var(--lv-mut);letter-spacing:.06em">{{ t.n }} LINKS</span>
+          <span style="font-size:11px;color:var(--lv-acc);letter-spacing:.08em">EDIT</span>
+        </button>
+      </sc-for>
+    </div>
+    <dc-import name="TabBar" active="browse" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.collections }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:8px 20px 12px"><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;letter-spacing:-0.02em">Collections</div><div style="font-size:12px;color:var(--lv-mut);margin-top:4px">Saved filters, not folders. A link can sit in many.</div></div>
+    <div style="flex:1;overflow:hidden;border-top:2px solid var(--lv-rule)">
+      <sc-for list="{{ collectionsList }}" as="c" hint-placeholder-count="6">
+        <button style="width:100%;display:flex;gap:14px;align-items:center;border:0;border-bottom:1px solid var(--lv-line);background:transparent;padding:15px 20px;text-align:left;cursor:pointer;font-family:var(--font-body)" onClick="{{ goResults }}">
+          <span style="flex:1;min-width:0"><span style="display:block;font-family:var(--font-heading);font-weight:800;font-size:16px;color:var(--lv-ink)">{{ c.name }}</span><span style="display:block;font-size:11px;letter-spacing:.04em;color:var(--lv-mut);margin-top:4px">{{ c.rule }}</span></span>
+          <span style="font-family:var(--font-heading);font-weight:800;font-size:17px;color:var(--lv-acc);flex:none">{{ c.n }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="padding:16px 20px 0"><button style="width:100%;height:50px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goFilters }}">SAVE CURRENT FILTERS AS A COLLECTION</button></div>
+    <div style="flex:none;height:16px"></div>
+    <dc-import name="TabBar" active="browse" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.settings }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:8px 20px 16px;display:flex;gap:14px;align-items:center;border-bottom:2px solid var(--lv-rule)">
+      <div style="width:46px;height:46px;flex:none;border:2px solid var(--lv-rule);display:grid;place-items:center;font-family:var(--font-heading);font-weight:800;font-size:16px">RT</div>
+      <div style="flex:1"><div style="font-family:var(--font-heading);font-weight:800;font-size:19px">Ravi Trivedi</div><div style="font-size:12px;color:var(--lv-mut);margin-top:2px">ravi@example.com · synced 4 min ago</div></div>
+      <span style="font-size:14px;color:var(--lv-mut)">›</span>
+    </div>
+    <div style="padding:16px 20px 10px"><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lv-mut);margin-bottom:10px">Appearance</div><div style="display:flex;border:1px solid var(--lv-line)"><span style="flex:1;text-align:center;padding:9px 0;font-size:12px">Light</span><span style="flex:1;text-align:center;padding:9px 0;font-size:12px;border-left:1px solid var(--lv-line)">Dark</span><span style="flex:1;text-align:center;padding:9px 0;font-size:12px;background:var(--lv-acc);color:var(--lv-inv);border-left:1px solid var(--lv-line)">System</span></div></div>
+    <div style="flex:1;overflow:hidden;border-top:1px solid var(--lv-line);margin-top:12px">
+      <sc-for list="{{ settingsRows }}" as="r" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--lv-line)"><span style="font-size:14px">{{ r.k }}</span><span style="font-size:12.5px;color:var(--lv-mut)">{{ r.v }}</span></div>
+      </sc-for>
+    </div>
+    <div style="padding:14px 20px 26px;border-top:2px solid var(--lv-rule)"><button style="width:100%;height:50px;background:transparent;border:2px solid var(--lv-acc);color:var(--lv-acc);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goSignin }}">LOG OUT</button></div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.offline }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>NO SIGNAL · 82%</span></div>
+    <div style="background:var(--lv-ink);color:var(--lv-bg);padding:11px 20px;display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.1em">OFFLINE</span><span style="font-size:11.5px;opacity:.8">342 cached · 1 save queued</span></div>
+    <div style="padding:14px 20px 14px"><div style="font-family:var(--font-heading);font-weight:800;font-size:24px;letter-spacing:-0.02em">Library</div><div style="font-size:12px;color:var(--lv-mut);margin-top:4px">Everything already saved still opens. New saves sync when you're back.</div></div>
+    <div style="flex:1;overflow:hidden;border-top:2px solid var(--lv-rule)"><sc-for list="{{ recent }}" as="l" hint-placeholder-count="3"><dc-import name="LinkRow" link="{{ l }}" on-open="{{ goDetail }}" hint-size="100%,96px"></dc-import></sc-for></div>
+    <dc-import name="TabBar" active="home" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.netError }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:8px 20px 14px;border-bottom:2px solid var(--lv-rule)"><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.18em">LINKVAULT</span></div>
+    <div style="padding:40px 20px 0">
+      <div style="width:38px;height:38px;background:var(--lv-acc)"></div>
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:24px;line-height:1.15;margin-top:20px">Couldn't reach<br>the vault.</div>
+      <div style="font-size:13px;color:var(--lv-mut);line-height:1.55;margin-top:12px">The server didn't respond. Your links are safe — this is a connection problem, not a data one.</div>
+      <div style="margin-top:22px;display:flex;flex-direction:column;gap:10px"><button style="height:50px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goHome }}">TRY AGAIN</button><button style="height:50px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;text-align:left;padding:0 16px;cursor:pointer" onClick="{{ goOffline }}">USE THE CACHED LIBRARY</button></div>
+      <div style="font-size:11px;color:var(--lv-mut);margin-top:18px;letter-spacing:.04em">Last successful sync: 4 minutes ago</div>
+    </div>
+    <div style="flex:1"></div>
+    <dc-import name="TabBar" active="home" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.deleteConfirm }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="padding:20px;opacity:.3"><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;line-height:1.1">useMemo &amp; useCallback, properly explained</div><div style="font-size:13px;color:var(--lv-mut);margin-top:10px">38 min — when memoisation actually helps.</div></div>
+    <div style="position:absolute;inset:0;background:rgba(24,23,22,.5)"></div>
+    <div style="position:absolute;left:16px;right:16px;bottom:26px;background:var(--lv-bg);border:2px solid var(--lv-rule);box-shadow:var(--shadow-lg);padding:18px">
+      <div style="font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1.2">Delete this link?</div>
+      <div style="font-size:13px;color:var(--lv-mut);line-height:1.5;margin-top:8px">Notes and tags go with it. This can't be undone after the toast disappears.</div>
+      <div style="display:flex;gap:10px;margin-top:18px"><button style="flex:1;height:48px;background:transparent;border:2px solid var(--lv-rule);color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer" onClick="{{ goDetail }}">KEEP</button><button style="flex:1;height:48px;background:var(--lv-acc);border:0;color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer" onClick="{{ goHome }}">DELETE</button></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ is.savedToast }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative">
+    <div style="display:flex;justify-content:space-between;padding:12px 20px 6px;font-size:11px;font-weight:600"><span>9:41</span><span>LTE · 82%</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px 14px"><span style="font-family:var(--font-heading);font-weight:800;font-size:12px;letter-spacing:.18em">LINKVAULT</span><button style="width:32px;height:32px;border:2px solid var(--lv-rule);background:transparent;color:var(--lv-ink);font-family:var(--font-heading);font-weight:800;font-size:11px;cursor:pointer" onClick="{{ goSettings }}">RT</button></div>
+    <div style="padding:0 20px 16px"><div style="font-family:var(--font-heading);font-weight:800;font-size:29px;line-height:1.05;letter-spacing:-0.02em">Good evening, Ravi.</div><div style="font-size:12.5px;color:var(--lv-mut);margin-top:6px">343 links · 13 waiting to be read</div></div>
+    <div style="flex:1;overflow:hidden;border-top:2px solid var(--lv-rule)"><sc-for list="{{ recent }}" as="l" hint-placeholder-count="3"><dc-import name="LinkRow" link="{{ l }}" on-open="{{ goDetail }}" hint-size="100%,96px"></dc-import></sc-for></div>
+    <div style="position:absolute;left:16px;right:16px;bottom:124px;background:var(--lv-ink);color:var(--lv-bg);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-lg)">
+      <div style="flex:1;min-width:0"><div style="font-family:var(--font-heading);font-weight:800;font-size:12.5px;letter-spacing:.04em">SAVED TO DEVELOPMENT › REACT</div><div style="font-size:11.5px;opacity:.75;margin-top:3px">Tagged react, performance · Unread</div></div>
+      <button style="border:0;background:transparent;color:var(--lv-bg);font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.08em;cursor:pointer;padding:0" onClick="{{ goHome }}">UNDO</button>
+      <button style="border:0;background:var(--lv-acc);color:var(--lv-inv);font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.08em;cursor:pointer;padding:8px 10px" onClick="{{ goDetail }}">VIEW</button>
+    </div>
+    <dc-import name="TabBar" active="home" on-go="{{ goTab }}" on-save="{{ goAdd }}" hint-size="100%,102px"></dc-import>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;screen&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onGo&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(screen: string) =&gt; void&quot;}}">
+class Component extends DCLogic {
+  links = [
+    { id: 'ipo', title: 'IPO GMP Live — Grey Market Premium Tracker', domain: 'investorgain.com', url: 'investorgain.com/report/ipo-gmp-live/331/', desc: 'Live grey-market premium table for every open and upcoming IPO.', cat: 'Finance · Stocks', tags: ['ipo', 'gmp', 'tracker'], status: 'To Read', fav: true, when: '2h' },
+    { id: 'usememo', title: 'useMemo & useCallback, properly explained', domain: 'youtube.com', url: 'youtube.com/watch?v=THL1OPn72vo', desc: '38 min — when memoisation actually helps and when it just costs you.', cat: 'Development · React', tags: ['react', 'performance'], status: 'Unread', fav: false, when: '5h' },
+    { id: 'chatgpt', title: 'ChatGPT', domain: 'chatgpt.com', url: 'chatgpt.com', desc: 'Daily driver. Kept here so it survives a browser reinstall.', cat: 'Other · Tools', tags: ['ai', 'daily'], status: 'Reference', fav: true, when: 'Yesterday' },
+    { id: 'expo', title: 'Expo Router — file-based routing', domain: 'docs.expo.dev', url: 'docs.expo.dev/router/introduction/', desc: 'Nested layouts and typed routes for the LinkVault app shell.', cat: 'Development · React', tags: ['expo', 'react-native'], status: 'Reading', fav: true, when: 'Yesterday' },
+    { id: 'varsity', title: 'Varsity: Mutual Funds, Chapter 4', domain: 'zerodha.com', url: 'zerodha.com/varsity/chapter/the-mutual-fund-structure/', desc: 'How the AMC, trustee and custodian actually split responsibilities.', cat: 'Finance · Mutual Funds', tags: ['mutual-funds', 'basics'], status: 'Reading', fav: false, when: '2d' },
+    { id: 'prisma', title: 'Prisma — relation queries and nested writes', domain: 'prisma.io', url: 'prisma.io/docs/orm/prisma-client/queries/relation-queries', desc: 'Needed for the LinkTag join table.', cat: 'Development · Node.js', tags: ['prisma', 'postgres'], status: 'To Read', fav: false, when: '3d' },
+    { id: 'youtube', title: 'YouTube', domain: 'youtube.com', url: 'youtube.com', desc: '', cat: 'Entertainment', tags: ['video'], status: 'Reference', fav: false, when: '3d' },
+    { id: 'elss', title: 'ELSS vs PPF vs NPS — which 80C option wins', domain: 'cleartax.in', url: 'cleartax.in/s/elss-vs-ppf-vs-nps', desc: 'Lock-in, returns and tax treatment side by side.', cat: 'Finance · Tax', tags: ['tax', '80c'], status: 'To Read', fav: false, when: '4d' },
+    { id: 'ec2', title: 'Deploying a Node API to EC2 behind Nginx', domain: 'aws.amazon.com', url: 'aws.amazon.com/getting-started/hands-on/deploy-nodejs-web-app/', desc: 'Reference for shipping the LinkVault API.', cat: 'Development · AWS', tags: ['aws', 'ec2', 'deploy'], status: 'Unread', fav: false, when: '5d' },
+    { id: 'rtk', title: 'RTK Query — cache invalidation patterns', domain: 'redux-toolkit.js.org', url: 'redux-toolkit.js.org/rtk-query/usage/automated-refetching', desc: 'Tag-based invalidation, which maps neatly onto link lists.', cat: 'Development · React', tags: ['redux', 'rtk-query'], status: 'Read', fav: false, when: '1w' },
+    { id: 'sony', title: 'Sony WH-1000XM5 — 22% off today', domain: 'amazon.in', url: 'amazon.in/dp/B09XS7JWHH', desc: 'Price tracker says this is the lowest since March.', cat: 'Shopping · Deals', tags: ['deal', 'audio'], status: 'Unread', fav: false, when: '1w' },
+    { id: 'kerala', title: 'Seven days in Kerala, without a car', domain: 'tripadvisor.in', url: 'tripadvisor.in/ShowTopic-g297623', desc: 'Backwater ferries, train legs and where to break the trip.', cat: 'Other · Travel', tags: ['travel', 'kerala'], status: 'To Read', fav: false, when: '2w' }
+  ];
+
+  byId(id) { return this.links.find(l => l.id === id) || this.links[0]; }
+
+  renderVals() {
+    const s = this.props.screen || 'home';
+    const go = this.props.onGo || (() => {});
+    const is = {};
+    ['onboarding','signin','signup','forgot','home','loading','emptyLib','searchIdle','search','noResults','filters','categories','categoryDetail','add','addLoading','metaFail','invalidUrl','share','duplicate','detail','edit','favorites','emptyFav','status','tags','collections','settings','offline','netError','deleteConfirm','savedToast'].forEach(k => { is[k] = (s === k); });
+    const L = this.links;
+    return {
+      is,
+      four: [1, 2, 3, 4],
+      onbSteps: [
+        { n: '01', t: 'Save from anywhere', d: 'Share sheet → LinkVault. No copy-paste.' },
+        { n: '02', t: 'Organize as you go', d: 'Category, tags and a reading status.' },
+        { n: '03', t: 'Find it in one search', d: 'Across titles, URLs, notes and tags.' }
+      ],
+      quick: [
+        { n: '18', label: 'Favorites', go: () => go('favorites') },
+        { n: '12', label: 'To read', go: () => go('status') },
+        { n: '6', label: 'Categories', go: () => go('categories') },
+        { n: '41', label: 'Tags', go: () => go('tags') }
+      ],
+      recent: L.slice(0, 3),
+      recentSearches: [
+        { q: 'react performance', n: '7 links' },
+        { q: 'unread aws', n: '4 links' },
+        { q: 'ipo gmp', n: '3 links' },
+        { q: 'mutual funds tax', n: '5 links' }
+      ],
+      topTags: [
+        { name: 'react', n: 29 }, { name: 'performance', n: 11 }, { name: 'aws', n: 11 },
+        { name: 'tax', n: 8 }, { name: 'prisma', n: 6 }, { name: 'deal', n: 5 },
+        { name: 'travel', n: 4 }, { name: 'ai', n: 4 }
+      ],
+      results: [this.byId('usememo'), this.byId('expo'), this.byId('rtk')],
+      keys: [
+        { f: '1 1 0', k: ['Q','W','E','R','T','Y','U','I','O','P'] },
+        { f: '1 1 0', k: ['A','S','D','F','G','H','J','K','L'] },
+        { f: '1 1 0', k: ['⇧','Z','X','C','V','B','N','M','⌫'] },
+        { f: '2 1 0', k: ['123','space','search'] }
+      ],
+      filterGroups: [
+        { label: 'Category', opts: [
+          { t: 'Development', on: 1 }, { t: 'Finance', on: 0 }, { t: 'Learning', on: 0 },
+          { t: 'Entertainment', on: 0 }, { t: 'Shopping', on: 0 }, { t: 'Other', on: 0 } ] },
+        { label: 'Sub-category', opts: [
+          { t: 'React', on: 1 }, { t: 'JavaScript', on: 0 }, { t: 'TypeScript', on: 0 },
+          { t: 'Node.js', on: 0 }, { t: 'AWS', on: 0 }, { t: 'Git', on: 0 } ] },
+        { label: 'Tags', opts: [
+          { t: '#react', on: 0 }, { t: '#performance', on: 0 }, { t: '#expo', on: 0 }, { t: '#prisma', on: 0 } ] },
+        { label: 'Status', opts: [
+          { t: 'Unread', on: 0 }, { t: 'To Read', on: 0 }, { t: 'Reading', on: 0 },
+          { t: 'Read', on: 0 }, { t: 'Reference', on: 0 }, { t: 'Archived', on: 0 } ] },
+        { label: 'Date added', opts: [
+          { t: 'Last 7 days', on: 0 }, { t: 'Last 30 days', on: 1 }, { t: 'This year', on: 0 }, { t: 'All time', on: 0 } ] },
+        { label: 'Source', opts: [
+          { t: 'YouTube', on: 0 }, { t: 'GitHub', on: 0 }, { t: 'Docs', on: 0 }, { t: 'Article', on: 0 } ] }
+      ].map(g => ({ label: g.label, opts: g.opts.map(o => ({
+          t: o.t,
+          bg: o.on ? 'var(--lv-acc)' : 'transparent',
+          fg: o.on ? 'var(--lv-inv)' : 'var(--lv-ink)',
+          bd: o.on ? 'var(--lv-acc)' : 'var(--lv-line)'
+        })) })),
+      categories: [
+        { n: '84', name: 'Development', subs: 'React · JavaScript · TypeScript · Node.js · AWS · Git · Salesforce' },
+        { n: '61', name: 'Finance', subs: 'Mutual Funds · Stocks · Tax · Insurance · Personal Finance' },
+        { n: '78', name: 'Learning', subs: 'Courses · Articles · Documentation · Books · YouTube' },
+        { n: '46', name: 'Entertainment', subs: 'Movies · Series · Music · Games' },
+        { n: '39', name: 'Shopping', subs: 'Products · Deals · Wishlist' },
+        { n: '34', name: 'Other', subs: 'Tools · Travel · Uncategorised' }
+      ],
+      devLinks: [this.byId('usememo'), this.byId('expo'), this.byId('prisma'), this.byId('ec2')],
+      detailMeta: [
+        { k: 'Category', v: 'Development › React' },
+        { k: 'Tags', v: '#react  #performance  #video' },
+        { k: 'Status', v: 'Unread — tap to change' },
+        { k: 'Source', v: 'YouTube · shared from the app' },
+        { k: 'Added', v: '14 Sep 2026, 6:12 pm' },
+        { k: 'Last opened', v: 'Never' }
+      ],
+      goSaved: () => go('savedToast'),
+      goOffline: () => go('offline'),
+      favLinks: [this.byId('ipo'), this.byId('chatgpt'), this.byId('expo')],
+      toReadLinks: [this.byId('elss'), this.byId('prisma'), this.byId('kerala')],
+      statusTabs: [
+        { t: 'Unread 9', on: 0 }, { t: 'To Read 12', on: 1 }, { t: 'Reading 3', on: 0 },
+        { t: 'Read 118', on: 0 }, { t: 'Reference 44', on: 0 }, { t: 'Archived 12', on: 0 }
+      ].map(s => ({
+        t: s.t,
+        bg: s.on ? 'var(--lv-acc)' : 'transparent',
+        fg: s.on ? 'var(--lv-inv)' : 'var(--lv-ink)',
+        bd: s.on ? 'var(--lv-acc)' : 'var(--lv-line)'
+      })),
+      tagList: [
+        { name: 'react', n: 29 }, { name: 'performance', n: 11 }, { name: 'aws', n: 11 },
+        { name: 'prisma', n: 6 }, { name: 'tax', n: 8 }, { name: 'mutual-funds', n: 7 },
+        { name: 'ipo', n: 5 }, { name: 'travel', n: 4 }
+      ],
+      collectionsList: [
+        { name: 'Read Later', rule: 'Status: To Read', n: 12 },
+        { name: 'Work References', rule: 'Development + Status: Reference', n: 37 },
+        { name: 'React Resources', rule: 'Tag: react · any status', n: 29 },
+        { name: 'Finance Research', rule: 'Finance + last 90 days', n: 23 },
+        { name: 'Shopping', rule: 'Shopping + Favorite', n: 9 },
+        { name: 'Travel', rule: 'Tag: travel', n: 4 }
+      ],
+      settingsRows: [
+        { k: 'Account & password', v: '' },
+        { k: 'Default category', v: 'Other' },
+        { k: 'Default status on save', v: 'Unread' },
+        { k: 'Notifications', v: 'Weekly unread digest' },
+        { k: 'Backup & sync', v: 'On · Wi-Fi only' },
+        { k: 'Import bookmarks', v: 'HTML file' },
+        { k: 'Export data', v: 'JSON · CSV' },
+        { k: 'Security', v: 'Face ID lock' },
+        { k: 'About', v: 'v1.0.0' }
+      ],
+      goTab: (id) => go(id === 'browse' ? 'categories' : id === 'saved' ? 'favorites' : id === 'you' ? 'settings' : id),
+      goHome: () => go('home'), goSearch: () => go('searchIdle'), goFilters: () => go('filters'),
+      goCategories: () => go('categories'), goFavorites: () => go('favorites'), goStatus: () => go('status'),
+      goTags: () => go('tags'), goCollections: () => go('collections'), goSettings: () => go('settings'),
+      goAdd: () => go('add'), goDetail: () => go('detail'), goEdit: () => go('edit'),
+      goSignin: () => go('signin'), goSignup: () => go('signup'), goForgot: () => go('forgot'),
+      goCategoryDetail: () => go('categoryDetail'), goDelete: () => go('deleteConfirm'),
+      goResults: () => go('search'), goDuplicate: () => go('duplicate'), goShare: () => go('share')
+    };
+  }
+}
+</script>
+</body>
+</html>

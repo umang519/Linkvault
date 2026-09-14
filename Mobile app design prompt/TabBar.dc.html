@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link rel="stylesheet" href="_ds/modernist-f5eeca6d-89d9-4425-9334-c68cd4d332c5/styles.css"><style>:root{--lv-bg:#f3f2f2;--lv-surf:#eae9e9;--lv-ink:#201e1d;--lv-mut:#605d5d;--lv-line:#bab6b6;--lv-rule:#201e1d;--lv-acc:#ec3013;--lv-accw:#fff2ef;--lv-inv:#f3f2f2}.lv-dark{--lv-bg:#191817;--lv-surf:#242221;--lv-ink:#f4f2f1;--lv-mut:#9b9797;--lv-line:#444141;--lv-rule:#f4f2f1;--lv-acc:#ff563c;--lv-accw:#3b1a12;--lv-inv:#191817}</style></helmet>
+<div style="position:relative;flex:none">
+  <button style="position:absolute;right:20px;bottom:74px;width:62px;height:62px;background:var(--lv-acc);color:var(--lv-inv);border:0;box-shadow:var(--shadow-md);display:grid;place-items:center;cursor:pointer;font-family:var(--font-heading);font-weight:800;font-size:11px;letter-spacing:.1em;line-height:1.1;text-align:center" onClick="{{ onSave }}" style-active="transform:translateY(1px)">SAVE<br>LINK</button>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);border-top:2px solid var(--lv-rule);background:var(--lv-bg);padding-bottom:18px">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+      <button style="border:0;background:transparent;padding:11px 0 9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--font-heading);font-weight:800;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:{{ t.color }}" onClick="{{ t.go }}">
+        <span style="width:18px;height:3px;background:{{ t.bar }};display:block"></span>{{ t.label }}
+      </button>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:140},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;search&quot;,&quot;browse&quot;,&quot;saved&quot;,&quot;you&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onGo&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(id: string) =&gt; void&quot;},&quot;onSave&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const go = this.props.onGo || (() => {});
+    const active = this.props.active || 'home';
+    const defs = [['home', 'Home'], ['search', 'Search'], ['browse', 'Browse'], ['saved', 'Saved'], ['you', 'You']];
+    return {
+      tabs: defs.map(([id, label]) => ({
+        label, id,
+        color: id === active ? 'var(--lv-acc)' : 'var(--lv-mut)',
+        bar: id === active ? 'var(--lv-acc)' : 'transparent',
+        go: () => go(id)
+      })),
+      onSave: this.props.onSave
+    };
+  }
+}
+</script>
+</body>
+</html>
