@@ -4,7 +4,7 @@ Guidance for Claude Code (and any other AI agent) working in this repository.
 
 ## Project status
 
-This repo currently contains planning docs and a finished mobile visual design — no app code has been scaffolded yet:
+`apps/mobile` now has every Phase 1.5 screen built against mock/local-Redux data (no `apps/api` yet — see PLAN.md Phase 0/1 for what's still pending on the backend):
 
 - [PROJECT.md](PROJECT.md) — the full product/technical spec (source of truth for *what* to build), including §14 which documents the finished mobile design system
 - [PLAN.md](PLAN.md) — the phased implementation plan (source of truth for *order* of work)
@@ -101,20 +101,24 @@ npx expo export --platform android   # bundles the JS to verify it builds cleanl
 
 ```
 theme/       tokens.ts (Modernist color/type tokens, PROJECT.md §14.2-14.3) + ThemeProvider.tsx (light/dark resolution)
-store/       Redux store + typed hooks
+store/       Redux store + typed hooks + linksSlice.ts — the `links` slice is the local "database" (seeded from
+             mocks/links.ts, mutated via addLink/updateLink/deleteLink/toggleFavorite/setStatus) that every screen
+             reads/writes through until apps/api exists, so adds/edits/deletes/favorites show up everywhere
 api/         RTK Query base api (apiSlice.ts) — inject feature endpoints into this, don't create separate createApi() instances
 types/       models.ts — client-side mirror of PROJECT.md §3; keep in sync with prisma/schema.prisma once it exists
-mocks/       links.ts — shared placeholder dataset used by screens until apps/api exists
-hooks/       useMockLinks.ts — shaped like a future useGetLinksQuery() (RTK Query); swap the import when the API lands
+mocks/       links.ts (seed data for linksSlice) + categories.ts (starter taxonomy) — read-only reference data;
+             live link state lives in the Redux slice above, not here
+lib/         linkFilters.ts (AND-combining filter engine shared by Search and Filters, built with Smart Collections
+             reuse in mind per PROJECT.md §5.2/§8) + urlNormalize.ts (validation/normalization for Add Link, §7.2)
+hooks/       useMockLinks.ts — shaped like a future useGetLinksQuery() (RTK Query); reads the `links` slice today,
+             swap the import for a real query hook when the API lands
 components/  LinkRow, TabBar, LetterMark, StatusBadge, Chip, SegmentedControl, Skeleton/SkeletonRow, Toast,
-             BottomSheet, Dialog, ScreenContainer, PlaceholderScreen — the full shared-component set is built
-             (PLAN.md §1.5); compose screens from these rather than styling ad hoc
+             BottomSheet, Dialog, Toggle, DeleteLinkDialog, StatusPickerDialog, CategoryPickerSheet, ScreenContainer
+             — the full shared-component set; compose screens from these rather than styling ad hoc
 navigation/  RootNavigator (stack) + MainTabs (5-tab bottom nav) — see the comment in RootNavigator.tsx for which
              design "screens" are separate routes vs. UI states of one route
-screens/     one folder per screen group (auth, home, search, browse, save, link, saved, settings). Built so far:
-             Onboarding, Sign in, Sign up, Forgot password, Home, Search — see PLAN.md §1.5 for exact status. The
-             rest are PlaceholderScreen stand-ins with a design-ref comment and a note on what that screen needs,
-             ready to be built out against Mobile app design prompt/Screen.dc.html
+screens/     one folder per screen group (auth, home, search, browse, save, link, saved, settings). All 14 Phase
+             1.5 screens are built — see PLAN.md §1.5 for exact status and what's still simulated vs. real.
 ```
 
-Every route resolves to a real component today. There is no scaffolding step left before building out remaining screens per PLAN.md §1.5 — the shared-component set (chips, bottom sheet, dialog, toast, skeleton) is done, so each remaining screen is UI composition against `Screen.dc.html`, not new infrastructure. Auth screens call no real backend yet (`TODO(auth, PLAN.md §1.1)` comments mark the spots); Home/Search read from `src/mocks/links.ts` via `useMockLinks`.
+Every route resolves to a real, built component today — no `PlaceholderScreen` stand-ins left (Phase 1.5 is fully built, PLAN.md §1.5). Auth screens call no real backend yet (`TODO(auth, PLAN.md §1.1)` comments mark the spots); metadata fetching, duplicate detection and the native share-extension are simulated/local rather than backed by `apps/api` or `apps/metadata` (neither exists yet — see PLAN.md Phase 0/2). Next up per PLAN.md is either Phase 0's backend scaffolding (`apps/api`, Prisma, Postgres) or the Phase 1.6 native share-extension wiring — both are blocked on real infrastructure, not more UI composition.
