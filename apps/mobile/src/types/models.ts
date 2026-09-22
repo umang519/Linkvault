@@ -15,6 +15,18 @@ export type LinkStatus =
   | 'Reference'
   | 'Archived';
 
+// The fixed order status moves through — status pickers and the
+// Saved/Status swipe-to-advance gesture both walk this array rather
+// than hardcoding the sequence per call site.
+export const STATUS_SEQUENCE: LinkStatus[] = [
+  'Unread',
+  'To Read',
+  'Reading',
+  'Read',
+  'Reference',
+  'Archived',
+];
+
 export interface Category {
   id: string;
   userId: string;

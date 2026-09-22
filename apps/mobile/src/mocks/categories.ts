@@ -1,4 +1,4 @@
-import type { Category } from '../types/models';
+import type { Category, Link } from '../types/models';
 import { linksInCategory } from './links';
 
 /**
@@ -65,9 +65,11 @@ export function categoryById(id: string): Category | undefined {
 }
 
 /** Link count for a category — direct count for a sub-category (leaf),
- * summed across children for a top-level category. */
-export function linkCountForCategory(categoryId: string): number {
+ * summed across children for a top-level category. Accepts a `links`
+ * override (like `linksInCategory`/`tagCounts`) so callers reading the
+ * live `links` Redux slice get live counts, not the static seed data. */
+export function linkCountForCategory(categoryId: string, links?: Link[]): number {
   const subs = subCategoriesOf(categoryId);
-  if (subs.length === 0) return linksInCategory(categoryId).length;
-  return subs.reduce((sum, s) => sum + linksInCategory(s.id).length, 0);
+  if (subs.length === 0) return linksInCategory(categoryId, links).length;
+  return subs.reduce((sum, s) => sum + linksInCategory(s.id, links).length, 0);
 }

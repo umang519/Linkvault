@@ -5,8 +5,11 @@ import { Chip } from '../../components/Chip';
 import { ScreenContainer } from '../../components/ScreenContainer';
 import { linkCountForCategory, subCategoriesOf, topLevelCategories } from '../../mocks/categories';
 import { tagCounts } from '../../mocks/links';
+import { useAppSelector } from '../../store/hooks';
+import { selectAllLinks } from '../../store/linksSlice';
 import { useTheme } from '../../theme/ThemeProvider';
 import { fonts, ruleWidth, type } from '../../theme/tokens';
+import type { Link } from '../../types/models';
 
 type Tab = 'categories' | 'collections' | 'tags';
 
@@ -17,6 +20,7 @@ export function BrowseScreen() {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
   const [tab, setTab] = useState<Tab>('categories');
+  const links = useAppSelector(selectAllLinks);
   const categories = useMemo(() => topLevelCategories(), []);
 
   return (
@@ -30,7 +34,7 @@ export function BrowseScreen() {
             {tab === 'categories'
               ? `${categories.length} categories`
               : tab === 'tags'
-                ? `${tagCounts().length} tags across the vault`
+                ? `${tagCounts(links).length} tags across the vault`
                 : 'Saved filters, not folders'}
           </Text>
         </View>
@@ -55,7 +59,7 @@ export function BrowseScreen() {
             keyExtractor={(c) => c.id}
             renderItem={({ item }) => (
               <CategoryRow
-                count={linkCountForCategory(item.id)}
+                count={linkCountForCategory(item.id, links)}
                 name={item.name}
                 subs={subCategoriesOf(item.id).map((s) => s.name).join(' · ')}
                 onPress={() => navigation.navigate('CategoryDetail', { categoryId: item.id })}
@@ -63,7 +67,7 @@ export function BrowseScreen() {
             )}
           />
         ) : tab === 'tags' ? (
-          <TagsList onPickTag={(name) => navigation.navigate('Search', { initialQuery: name })} />
+          <TagsList links={links} onPickTag={(name) => navigation.navigate('Search', { initialQuery: name })} />
         ) : (
           <CollectionsPlaceholder />
         )}
@@ -96,14 +100,14 @@ function CategoryRow({
   );
 }
 
-function TagsList({ onPickTag }: { onPickTag: (name: string) => void }) {
+function TagsList({ links, onPickTag }: { links: Link[]; onPickTag: (name: string) => void }) {
   const { colors } = useTheme();
   const [query, setQuery] = useState('');
   const tags = useMemo(() => {
-    const all = tagCounts();
+    const all = tagCounts(links);
     const q = query.trim().toLowerCase();
     return q ? all.filter((t) => t.name.toLowerCase().includes(q)) : all;
-  }, [query]);
+  }, [links, query]);
 
   return (
     <View style={styles.tagsWrap}>

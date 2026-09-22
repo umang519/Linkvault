@@ -6,6 +6,8 @@ import { LinkRow } from '../../components/LinkRow';
 import { ScreenContainer } from '../../components/ScreenContainer';
 import { categoryById, linkCountForCategory, subCategoriesOf } from '../../mocks/categories';
 import { linksInCategory } from '../../mocks/links';
+import { useAppSelector } from '../../store/hooks';
+import { selectAllLinks } from '../../store/linksSlice';
 import { useTheme } from '../../theme/ThemeProvider';
 import { fonts, hairlineWidth, ruleWidth, type } from '../../theme/tokens';
 
@@ -15,6 +17,7 @@ export function CategoryDetailScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const categoryId: string = route.params?.categoryId;
+  const sourceLinks = useAppSelector(selectAllLinks);
 
   const category = categoryById(categoryId);
   const subs = useMemo(() => subCategoriesOf(categoryId), [categoryId]);
@@ -24,9 +27,9 @@ export function CategoryDetailScreen() {
   const allLinks = useMemo(
     () =>
       selectedSub
-        ? linksInCategory(selectedSub)
-        : subs.flatMap((s) => linksInCategory(s.id)),
-    [selectedSub, subs]
+        ? linksInCategory(selectedSub, sourceLinks)
+        : subs.flatMap((s) => linksInCategory(s.id, sourceLinks)),
+    [selectedSub, subs, sourceLinks]
   );
   const links = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -73,7 +76,7 @@ export function CategoryDetailScreen() {
 
       <View style={styles.chipRow}>
         <FlatList
-          data={[{ id: null as string | null, name: `All ${allLinks.length}` }, ...subs.map((s) => ({ id: s.id, name: `${s.name} ${linkCountForCategory(s.id)}` }))]}
+          data={[{ id: null as string | null, name: `All ${allLinks.length}` }, ...subs.map((s) => ({ id: s.id, name: `${s.name} ${linkCountForCategory(s.id, sourceLinks)}` }))]}
           keyExtractor={(item) => item.id ?? 'all'}
           horizontal
           showsHorizontalScrollIndicator={false}

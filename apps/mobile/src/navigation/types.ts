@@ -1,3 +1,5 @@
+import type { LinkFilterState } from '../lib/linkFilters';
+
 /**
  * Route params for the whole app. Keep this in sync as screens gain
  * real params (e.g. AddLink taking a shared URL, LinkDetail/EditLink
@@ -13,8 +15,9 @@ export type MainTabParamList = {
   // see HomeScreen.tsx.
   Home: { justSaved?: { title: string; category: string } } | undefined;
   // Set by Browse's Tags list (and anywhere else that wants to hand off
-  // a starting query) so Search doesn't open on its idle state.
-  Search: { initialQuery?: string } | undefined;
+  // a starting query) so Search doesn't open on its idle state. `filters`
+  // is set by FiltersScreen on "SHOW N LINKS" (see src/lib/linkFilters.ts).
+  Search: { initialQuery?: string; filters?: LinkFilterState } | undefined;
   Browse: undefined;
   Saved: undefined;
   You: undefined;

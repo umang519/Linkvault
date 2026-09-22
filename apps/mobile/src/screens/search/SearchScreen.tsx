@@ -4,17 +4,21 @@ import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-na
 import { Chip } from '../../components/Chip';
 import { LinkRow } from '../../components/LinkRow';
 import { ScreenContainer } from '../../components/ScreenContainer';
-import { mockLinks, tagCounts } from '../../mocks/links';
+import { applyLinkFilter, activeFilterCount, type LinkFilterState } from '../../lib/linkFilters';
+import { tagCounts } from '../../mocks/links';
+import { useAppSelector } from '../../store/hooks';
+import { selectAllLinks } from '../../store/linksSlice';
 import { useTheme } from '../../theme/ThemeProvider';
 import { fonts, hairlineWidth, ruleWidth, type } from '../../theme/tokens';
-import type { Link } from '../../types/models';
 
 // Design ref: Screen.dc.html — is.searchIdle / is.search / is.noResults are
 // states of this one route (idle → typing → results / zero-results), per
-// RootNavigator.tsx. Filters against `mockLinks` client-side for now —
-// swap `search()` below for a `useSearchLinksQuery(query)` RTK Query call
-// once apps/api exists (PLAN.md §1.4); the field list this searches
-// (title/url/description/notes/tags) must match PROJECT.md §5.1 either way.
+// RootNavigator.tsx. Filters against the `links` Redux slice client-side
+// for now — swap the `applyLinkFilter` call for a `useSearchLinksQuery()`
+// RTK Query call once apps/api exists (PLAN.md §1.4); the field list this
+// searches (title/url/description/notes/tags) must match PROJECT.md §5.1
+// either way. `filters` (structured criteria from the Filters screen) and
+// the free-text query AND together, per PROJECT.md §5.2.
 const RECENT_SEARCHES = [
   { q: 'react performance', n: 7 },
   { q: 'unread aws', n: 4 },
@@ -26,19 +30,29 @@ export function SearchScreen() {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
+  const links = useAppSelector(selectAllLinks);
   const [query, setQuery] = useState(route.params?.initialQuery ?? '');
+  const [filters, setFilters] = useState<LinkFilterState>(route.params?.filters ?? {});
 
-  // Tab screens stay mounted across switches, so a fresh initialQuery
-  // (e.g. tapping a tag in Browse) needs an effect, not just useState's
-  // one-time initializer, to actually update an already-mounted screen.
+  // Tab screens stay mounted across switches, so a fresh initialQuery/
+  // filters (e.g. tapping a tag in Browse, or committing the Filters
+  // sheet) needs an effect, not just useState's one-time initializer, to
+  // actually update an already-mounted screen.
   useEffect(() => {
     if (route.params?.initialQuery) setQuery(route.params.initialQuery);
   }, [route.params?.initialQuery]);
+  useEffect(() => {
+    if (route.params?.filters) setFilters(route.params.filters);
+  }, [route.params?.filters]);
 
-  const isIdle = query.trim().length === 0;
-  const results = useMemo(() => (isIdle ? [] : search(query)), [query, isIdle]);
+  const filterCount = activeFilterCount(filters);
+  const isIdle = query.trim().length === 0 && filterCount === 0;
+  const results = useMemo(
+    () => (isIdle ? [] : applyLinkFilter(links, { ...filters, search: query })),
+    [links, query, filters, isIdle]
+  );
   const isNoResults = !isIdle && results.length === 0;
-  const topTags = useMemo(() => tagCounts().slice(0, 8), []);
+  const topTags = useMemo(() => tagCounts(links).slice(0, 8), [links]);
 
   return (
     <ScreenContainer>
@@ -47,7 +61,7 @@ export function SearchScreen() {
           <TextInput
             value={query}
             onChangeText={setQuery}
-            placeholder={`Search ${mockLinks.length} links`}
+            placeholder={`Search ${links.length} links`}
             placeholderTextColor={colors.muted}
             autoFocus
             style={[styles.input, { color: colors.ink }]}
@@ -67,6 +81,7 @@ export function SearchScreen() {
         <NoResults
           query={query}
           onSaveInstead={() => navigation.navigate('AddLink')}
+          onClearFilters={filterCount > 0 ? () => setFilters({}) : undefined}
         />
       ) : (
         <>
@@ -78,7 +93,9 @@ export function SearchScreen() {
               onPress={() => navigation.navigate('Filters')}
               style={[styles.filterBtn, { backgroundColor: colors.accent }]}
             >
-              <Text style={[styles.filterBtnText, { color: colors.inverse }]}>FILTER</Text>
+              <Text style={[styles.filterBtnText, { color: colors.inverse }]}>
+                FILTER{filterCount > 0 ? ` (${filterCount})` : ''}
+              </Text>
             </Pressable>
           </View>
           <FlatList
@@ -133,32 +150,35 @@ function IdleState({
   );
 }
 
-function NoResults({ query, onSaveInstead }: { query: string; onSaveInstead: () => void }) {
+function NoResults({
+  query,
+  onSaveInstead,
+  onClearFilters,
+}: {
+  query: string;
+  onSaveInstead: () => void;
+  onClearFilters?: () => void;
+}) {
   const { colors } = useTheme();
   return (
     <View style={[styles.noResults, { borderTopColor: colors.rule, borderTopWidth: ruleWidth }]}>
       <Text style={[styles.noResultsTitle, { color: colors.ink }]}>
-        No links match “{query}”.
+        {query.trim() ? `No links match "${query}".` : 'No links match these filters.'}
       </Text>
       <Text style={[styles.noResultsBody, { color: colors.muted }]}>
         Searched titles, URLs, descriptions, notes and tags.
       </Text>
+      {onClearFilters ? (
+        <Pressable onPress={onClearFilters} style={styles.clearFiltersLink}>
+          <Text style={[styles.clearFiltersText, { color: colors.accent }]}>CLEAR ACTIVE FILTERS</Text>
+        </Pressable>
+      ) : null}
       <Pressable style={[styles.noResultsButton, { backgroundColor: colors.accent }]} onPress={onSaveInstead}>
         <Text style={[styles.noResultsButtonText, { color: colors.inverse }]}>
           SAVE A LINK FOR THIS INSTEAD
         </Text>
       </Pressable>
     </View>
-  );
-}
-
-function search(query: string): Link[] {
-  const q = query.trim().toLowerCase();
-  return mockLinks.filter((l) =>
-    [l.title, l.url, l.description ?? '', l.notes ?? '', ...l.tags.map((t) => t.name)]
-      .join(' ')
-      .toLowerCase()
-      .includes(q)
   );
 }
 
@@ -183,6 +203,8 @@ const styles = StyleSheet.create({
   noResults: { padding: 20 },
   noResultsTitle: { fontFamily: fonts.heading, fontSize: 22, lineHeight: 26 },
   noResultsBody: { fontFamily: fonts.body, fontSize: type.body, lineHeight: 19, marginTop: 12 },
+  clearFiltersLink: { marginTop: 14 },
+  clearFiltersText: { fontFamily: fonts.heading, fontSize: 11, letterSpacing: 0.6 },
   noResultsButton: { marginTop: 22, height: 48, justifyContent: 'center', paddingHorizontal: 16 },
   noResultsButtonText: { fontFamily: fonts.heading, fontSize: 13, letterSpacing: 0.6 },
 });
